@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.ac.ebi.pride.maven</groupId>
+        <artifactId>pride-base-master</artifactId>
+        <version>1.0.3</version>
+    </parent>
+
+    <groupId>uk.ac.ebi.pride.archive</groupId>
+    <artifactId>archive-search</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+
+    <!--
+        This project requires several maven profiles to build and run correctly.
+        Maven profiles to use:
+            db-pride-repo-pridepro             connection config for the PRIDE repo Oracle DB
+            db-pride-repo-pridearch-ro-user    read only user (and schema) for the PRIDE repo Oracle DB
+            pride3-submission-pipeline         other configurations for the pipeline
+            pride-archive-solr-cores           solr cores for PRIDE Archive
+
+        NOTE: to build an executable indexer version
+              (and assembly to generate a zip) an additional profile
+              is needed (see configuration below):
+                  pride-archive-indexer-assembly
+    -->
+
+    <licenses>
+        <license>
+            <name>The Apache Software License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>PRIDE Developer</name>
+            <id>pride-support@ebi.ac.uk</id>
+            <email>pride-support@ebi.ac.uk</email>
+            <organization>Proteomics Services Team, EMBL - European Bioinformatics Institute</organization>
+        </developer>
+    </developers>
+
+	<organization>
+		<name>EMBL - European Bioinformatics Institute</name>
+		<url>http://www.ebi.ac.uk</url>
+	</organization>
+
+    <properties>
+        <jmztab.version>3.0.1-SNAPSHOT</jmztab.version>
+        <archive.repo.version>0.1.18</archive.repo.version>
+        <archive.data.provider.api.version>2.0.5</archive.data.provider.api.version>
+        <protein.index.search.version>0.2.0-SNAPSHOT</protein.index.search.version>
+        <protein.identification.index.search.version>0.1.0-SNAPSHOT</protein.identification.index.search.version>
+        <psm.index.search.version>0.1.5-SNAPSHOT</psm.index.search.version>
+        <ontology.index.search.version>0.1.1</ontology.index.search.version>
+    </properties>
+
+    <build>
+        <resources>
+            <!-- Maven should filter properties files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <!-- Maven should not filter other files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+	    <plugins>
+            <plugin>
+                <!-- ToDo: remove with next pride master version 1.0.4, as globally configured -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <remoteTagging>true</remoteTagging>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+		</plugins>
+    </build>
+
+    <profiles>
+        <!-- select this profile to build the indexer into its ZIP file -->
+        <profile>
+            <id>pride-archive-indexer-assembly</id>
+            <build>
+                <plugins>
+                    <!--assembly to zip-->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${project.basedir}/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- maven dependency plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--jar-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <!--NOTE: you must have this version number, otherwise, the build will not be able to find Validator-->
+                        <version>2.4</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/test</exclude>
+                                <exclude>**/test/*.class</exclude>
+                            </excludes>
+                            <archive>
+                                <manifest>
+                                    <mainClass>uk.ac.ebi.pride.archive.search.tools.ProjectIndexBuilder</mainClass>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib</classpathPrefix>
+                                    <useUniqueVersions>false</useUniqueVersions>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+
+        <!-- ##### PRIDE dependencies ##### ##### ##### ##### ##### -->
+        <!-- protein-index-search -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>protein-index-search</artifactId>
+            <version>${protein.index.search.version}</version>
+        </dependency>
+        <!-- protein-identification-index-search -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>protein-identification-index-search</artifactId>
+            <version>${protein.identification.index.search.version}</version>
+        </dependency>
+        <!-- psm-index-search -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>psm-index-search</artifactId>
+            <version>${psm.index.search.version}</version>
+        </dependency>
+        <!-- ontology-index-search -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>ontology-index-search</artifactId>
+            <version>${ontology.index.search.version}</version>
+        </dependency>
+        <!-- archive-repo -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-repo</artifactId>
+            <version>${archive.repo.version}</version>
+        </dependency>
+        <!-- archive-data-provider-api -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-data-provider-api</artifactId>
+            <version>${archive.data.provider.api.version}</version>
+        </dependency>
+        <!-- jmztab-modular-util for testing -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>jmztab-modular-util</artifactId>
+            <version>${jmztab.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ##### 3rd party dependencies ##### ##### ##### ##### ##### -->
+        <!-- spring-ws-core -->
+        <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-ws-core</artifactId>
+            <version>2.1.3.RELEASE</version>
+        </dependency>
+
+        <!--SolrJ-->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>${solrj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-test-framework</artifactId>
+            <version>${solrj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Oracle DB driver -->
+        <!-- ToDo: this should be provided! -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>oracle-thin</artifactId>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository> <!-- EBI repo -->
+            <id>nexus-ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
+            <releases>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <scm>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring/</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring/</url>
+    </scm>
+
+</project>
