@@ -1,0 +1,42 @@
+<assembly>
+
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <dependencySets>
+        <dependencySet>
+            <!--<outputDirectory>${assembly.dir}/lib</outputDirectory>-->
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+			<outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/target</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <!--<outputDirectory>${assembly.dir}</outputDirectory>-->
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>log</outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <!--<fileSet>-->
+            <!--<directory>${project.basedir}/script</directory>-->
+            <!--&lt;!&ndash;<outputDirectory>${assembly.dir}</outputDirectory>&ndash;&gt;-->
+            <!--<outputDirectory>/</outputDirectory>-->
+            <!--<filtered>true</filtered>-->
+        <!--</fileSet>-->
+    </fileSets>
+</assembly>
