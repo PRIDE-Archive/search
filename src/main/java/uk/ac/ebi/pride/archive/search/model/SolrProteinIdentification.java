@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.archive.search.model;
 
-import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinIdentificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvider;
 
 import java.util.Set;
 
@@ -8,47 +8,62 @@ import java.util.Set;
  * @author Jose A. Dianes
  * @version $Id$
  */
-public class SolrProteinIdentification implements ProteinIdentificationProvider {
+public class SolrProteinIdentification implements ProteinReferenceProvider {
 
     private String accession;
-    private Set<String> synonyms;
-    private String projectAccession;
-    private String assayAccession;
+    private String uniprotMapping;
+    private String ensemblMapping;
+    private Set<String> otherMappings;
+    private String inferredSequence;
+    private String submittedSequence;
 
     public void setAccession(String accession) {
         this.accession = accession;
     }
 
-    public void setSynonyms(Set<String> synonyms) {
-        this.synonyms = synonyms;
-    }
-
-    public void setProjectAccession(String projectAccession) {
-        this.projectAccession = projectAccession;
-    }
-
-    public void setAssayAccession(String assayAccession) {
-        this.assayAccession = assayAccession;
-    }
-
-    @Override
     public String getAccession() {
         return accession;
     }
 
-    @Override
-    public Set<String> getSynonyms() {
-        return synonyms;
+    public String getUniprotMapping() {
+        return uniprotMapping;
     }
 
-    @Override
-    public String getProjectAccession() {
-        return projectAccession;
+    public void setUniprotMapping(String uniprotMapping) {
+        this.uniprotMapping = uniprotMapping;
     }
 
-    @Override
-    public String getAssayAccession() {
-        return assayAccession;
+    public String getEnsemblMapping() {
+        return ensemblMapping;
     }
+
+    public void setEnsemblMapping(String ensemblMapping) {
+        this.ensemblMapping = ensemblMapping;
+    }
+
+    public Set<String> getOtherMappings() {
+        return otherMappings;
+    }
+
+    public void setOtherMappings(Set<String> otherMappings) {
+        this.otherMappings = otherMappings;
+    }
+
+    public String getInferredSequence() {
+        return inferredSequence;
+    }
+
+    public void setInferredSequence(String inferredSequence) {
+        this.inferredSequence = inferredSequence;
+    }
+
+    public String getSubmittedSequence() {
+        return submittedSequence;
+    }
+
+    public void setSubmittedSequence(String submittedSequence) {
+        this.submittedSequence = submittedSequence;
+    }
+
 
 }

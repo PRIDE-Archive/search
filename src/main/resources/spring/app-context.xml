@@ -19,10 +19,6 @@
 
     <context:component-scan base-package="uk.ac.ebi.pride.archive.search.tools"/>
 
-    <bean id="submissionsDirectory" class="java.io.File">
-        <constructor-arg value="${submissions.directory}"/>
-    </bean>
-
     <!--Setup data source using place holder properties-->
     <bean id="prideDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${prider.jdbc.driver}"/>
@@ -86,7 +82,7 @@
         <constructor-arg ref="solrOntologyTemplate"/>
     </bean>
 
-    <bean id="solrProteinIdentificationRepositoryFactory" class="uk.ac.ebi.pride.proteinindex.search.search.repository.SolrProteinIdentificationRepositoryFactory">
+    <bean id="solrProteinIdentificationRepositoryFactory" class="uk.ac.ebi.pride.proteinidentificationindex.search.service.repository.SolrProteinIdentificationRepositoryFactory">
         <constructor-arg ref="solrProteinTemplate"/>
     </bean>
 
@@ -99,7 +95,7 @@
         <constructor-arg value="#{ solrOntologyTermRepositoryFactory.create() }"/>
     </bean>
 
-    <bean id="proteinIdentificationSearchService" class="uk.ac.ebi.pride.proteinindex.search.search.service.ProteinIdentificationSearchService">
+    <bean id="proteinIdentificationSearchService" class="uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService">
         <constructor-arg value="#{ solrProteinIdentificationRepositoryFactory.create() }"/>
     </bean>
 

@@ -19,7 +19,6 @@
         Maven profiles to use:
             db-pride-repo-pridepro             connection config for the PRIDE repo Oracle DB
             db-pride-repo-pridearch-ro-user    read only user (and schema) for the PRIDE repo Oracle DB
-            pride3-submission-pipeline         other configurations for the pipeline
             pride-archive-solr-cores           solr cores for PRIDE Archive
 
         NOTE: to build an executable indexer version
@@ -53,9 +52,9 @@
     <properties>
         <jmztab.version>3.0.1-SNAPSHOT</jmztab.version>
         <archive.repo.version>0.1.18</archive.repo.version>
-        <archive.data.provider.api.version>2.0.5</archive.data.provider.api.version>
-        <protein.index.search.version>0.2.0-SNAPSHOT</protein.index.search.version>
-        <protein.identification.index.search.version>0.1.0-SNAPSHOT</protein.identification.index.search.version>
+        <archive.data.provider.api.version>2.0.6-SNAPSHOT</archive.data.provider.api.version>
+        <protein.index.search.version>0.2.1-SNAPSHOT</protein.index.search.version>
+        <protein.identification.index.search.version>0.1.1-SNAPSHOT</protein.identification.index.search.version>
         <psm.index.search.version>0.1.5-SNAPSHOT</psm.index.search.version>
         <ontology.index.search.version>0.1.1</ontology.index.search.version>
     </properties>
@@ -260,9 +259,9 @@
     </repositories>
 
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring/</developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride_r/archive-search/branches/service-refactoring/</url>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</url>
     </scm>
 
 </project>

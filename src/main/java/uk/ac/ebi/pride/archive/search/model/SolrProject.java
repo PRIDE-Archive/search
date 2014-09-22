@@ -29,14 +29,6 @@ import java.util.*;
  */
 public class SolrProject implements ProjectProvider {
 
-    public static final String PROTEIN_IDENTIFICATION_FIELD_SEPARATOR = " ";
-    private static final int PROTEIN_IDENTIFICATION_ASSAY_ACCESSION_INDEX = 0;
-    private static final int PROTEIN_IDENTIFICATION_PROTEIN_ACCESSION_INDEX = 1;
-
-    public static final String PEPTIDE_FIELD_SEPARATOR = " ";
-    private static final int PEPTIDE_ASSAY_ACCESSION_INDEX = 0;
-    private static final int PEPTIDE_SEQUENCE_INDEX = 1;
-
 
     //we will be using the accession to identify the documents in the index
     @Field("id")
@@ -189,7 +181,7 @@ public class SolrProject implements ProjectProvider {
 
     //This field is not store, so when you retrieve the value from solr is always null
     @Field("protein_identifications")
-    private List<String> proteinIdentifications;
+    private Set<String> proteinIdentifications;
 
     //This field is not store, so when you retrieve the value from solr is always null
     @Field("peptide_sequences")
@@ -736,35 +728,7 @@ public class SolrProject implements ProjectProvider {
 
     @Override
     public Map<String, Collection<ProteinIdentificationProvider>> getProteinIdentifications() {
-//        Map<String, Collection<ProteinIdentificationProvider>> res = new HashMap<String, Collection<ProteinIdentificationProvider>>();
-//
-//        if (this.proteinIdentifications != null) {
-//            for (String peptideIdentificationString: this.proteinIdentifications) {
-//                String[] tokens = peptideIdentificationString.split(PEPTIDE_IDENTIFICATION_FIELD_SEPARATOR);
-//                String assayAccession = tokens[PEPTIDE_IDENTIFICATION_ASSAY_ACCESSION_INDEX];
-//                String peptideAccession = tokens[PEPTIDE_IDENTIFICATION_PEPTIDE_ACCESSION_INDEX];
-//                // create the identification
-//                SolrProteinIdentification solrProteinIdentification = new SolrProteinIdentification();
-//                solrProteinIdentification.setAccession(peptideAccession);
-//                // process synonyms
-//                if (tokens.length>2) {
-//                    solrProteinIdentification.setSynonyms(new TreeSet<String>());
-//                    for (String synonym: Arrays.asList(tokens).subList(2,tokens.length)) {
-//                        solrProteinIdentification.getSynonyms().add(synonym);
-//                    }
-//                }
-//                // add it to the resulting map
-//                if (res.containsKey(assayAccession)) {
-//                    res.get(assayAccession).add(solrProteinIdentification);
-//                } else {
-//                    Collection<ProteinIdentificationProvider> identifications = new LinkedList<ProteinIdentificationProvider>();
-//                    identifications.add(solrProteinIdentification);
-//                    res.put(assayAccession,identifications);
-//                }
-//            }
-//        }
-//
-//        return res;
+        //The protein identification accession can not be retrieved because the field is not store in solr
         return null;
     }
 
@@ -774,41 +738,32 @@ public class SolrProject implements ProjectProvider {
         return null;
     }
 
-    public void setProteinIdentifications(Collection<? extends ProteinIdentificationProvider> proteinIdentifications) {
+    public void setProteinIdentifications(Collection<? extends ProteinReferenceProvider> proteinIdentifications) {
 
         Set<String> proteinIdentificationFields = new TreeSet<String> ();
-        for (ProteinIdentificationProvider proteinIdentification: proteinIdentifications) {
-            String proteinIdentificationField = proteinIdentification.getAssayAccession() + PROTEIN_IDENTIFICATION_FIELD_SEPARATOR + proteinIdentification.getAccession();
-            // add synonyms
-            if (proteinIdentification.getSynonyms() != null) {
-                for (String synonym : proteinIdentification.getSynonyms()) {
-                    proteinIdentificationField = proteinIdentificationField + PROTEIN_IDENTIFICATION_FIELD_SEPARATOR + synonym;
+        for (ProteinReferenceProvider proteinIdentification: proteinIdentifications) {
+
+            // add accession
+            if(proteinIdentification.getAccession() != null)
+                proteinIdentificationFields.add(proteinIdentification.getAccession());
+
+            // add uniprot mapping
+            if(proteinIdentification.getUniprotMapping() != null)
+                proteinIdentificationFields.add(proteinIdentification.getUniprotMapping());
+
+            // add ensemble mapping
+            if(proteinIdentification.getEnsemblMapping() != null)
+                proteinIdentificationFields.add(proteinIdentification.getEnsemblMapping());
+
+            // add other mappings
+            if (proteinIdentification.getOtherMappings() != null) {
+                for (String mapping : proteinIdentification.getOtherMappings()) {
+                    proteinIdentificationFields.add(mapping);
                 }
             }
-            proteinIdentificationFields.add(proteinIdentificationField);
         }
-        this.proteinIdentifications = new LinkedList<String>();
-        this.proteinIdentifications.addAll(proteinIdentificationFields);
-    }
 
-    public void setProteinIdentifications(Map<? extends String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences) {
-
-        Set<String> proteinIdentificationFields = new TreeSet<String> ();
-
-        for (Map.Entry<? extends String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinIdentificationEntry: proteinReferences.entrySet()) {
-            for (Map.Entry<? extends String, ? extends ProteinReferenceProvider> proteinReferenceProvider : proteinIdentificationEntry.getValue().entrySet()) {
-                String proteinIdentificationField = proteinIdentificationEntry.getKey() + PROTEIN_IDENTIFICATION_FIELD_SEPARATOR + proteinReferenceProvider.getValue().getAccession();
-                // add synonyms
-                if (proteinReferenceProvider.getValue().getSynonyms() != null) {
-                    for (String synonym : proteinReferenceProvider.getValue().getSynonyms()) {
-                        proteinIdentificationField = proteinIdentificationField + PROTEIN_IDENTIFICATION_FIELD_SEPARATOR + synonym;
-                    }
-                }
-                proteinIdentificationFields.add(proteinIdentificationField);
-            }
-        }
-        this.proteinIdentifications = new LinkedList<String>();
-        this.proteinIdentifications.addAll(proteinIdentificationFields);
+        this.proteinIdentifications = proteinIdentificationFields;
     }
 
     public void setPeptideSequences(Collection<? extends PeptideSequenceProvider> peptideSequences){
@@ -860,7 +815,6 @@ public class SolrProject implements ProjectProvider {
     public int getTotalSpectrumCount() {
         return numTotalSpectrum;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public void setSpeciesAscendantsAccessions(LinkedList<String> speciesAscendantsAccessions) {
         this.speciesAscendantsAccessions = speciesAscendantsAccessions;
