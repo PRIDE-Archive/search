@@ -13,7 +13,6 @@ import org.junit.Test;
 import uk.ac.ebi.pride.archive.dataprovider.identification.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
-import uk.ac.ebi.pride.archive.search.model.SolrPeptideSequence;
 import uk.ac.ebi.pride.archive.search.model.SolrProject;
 import uk.ac.ebi.pride.archive.search.service.dao.ProjectIndexDao;
 import uk.ac.ebi.pride.archive.search.service.dao.ProjectSearchDao;
@@ -21,7 +20,6 @@ import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectIndexDaoSolr;
 import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr;
 import uk.ac.ebi.pride.archive.search.util.SearchFields;
 import uk.ac.ebi.pride.jmztab.utils.errors.MZTabException;
-import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,12 +35,16 @@ import java.util.*;
  */
 public class SolrProjectSearchTest extends SolrTestCaseJ4 {
 
-
     private static final String PROTEIN_A5A5Z5_ACCESSION = "A5A5Z5";
-    private static final String FIRST_PEPTIDE_SEQUENCE_PXD000581 = "LYGILNHANAPVTR";
-    private static final String SECOND_PEPTIDE_SEQUENCE_PXD000581 = "FLTDRYPISGIFSGK";
-    private static final String THIRD_PEPTIDE_SEQUENCE_PXD000581 = "VHAASTAGPFPDNAVVAR";
-    private static final String FOUR_PEPTIDE_SEQUENCE_PXD000581 = "LLSQTTSVHFHGQVQR";
+
+    private static final String UNIPROT_ACCESSION = "A5A5Z5";
+    private static final String ENSEMBL_ACCESSION = "A5A5Z5";
+    private static final String OTHER_ACCESSION = "UPI0001509A10";
+
+    private static final String FIRST_PEPTIDE_SEQUENCE_PXD000581 = "FLTDRYPISGIFSGK";
+    private static final String SECOND_PEPTIDE_SEQUENCE_PXD000581 = "LLSQTTSVHFHGQVQR";
+    private static final String THIRD_PEPTIDE_SEQUENCE_PXD000581 = "LYGILNHANAPVTR";
+    private static final String FOUR_PEPTIDE_SEQUENCE_PXD000581 = "VHAASTAGPFPDNAVVAR";
 
     private static final String PROJECT_PXD000433_ACCESSION = "PXD000433";
     private static final String PROJECT_PXD000581_ACCESSION = "PXD000581";
@@ -58,6 +60,11 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
     public static final long ZERO_DOCS = 0L;
     public static final long SINGLE_DOC = 1L;
 
+    private static LinkedList<ProteinReferenceProvider> proteinReferencesPXD000433;
+    private static LinkedList<PeptideSequenceProvider> peptideSequencesPXD000433;
+    private static LinkedList<ProteinReferenceProvider> proteinReferencesPXD000581;
+    private static LinkedList<PeptideSequenceProvider> peptideSequencesPXD000581;
+
     @BeforeClass
     public static void initialise() throws Exception {
         initCore(
@@ -66,7 +73,6 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
                 "src/test/resources/solr"
         );
     }
-
 
 
     @Before
@@ -166,6 +172,51 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
         checkIsProjectPXD000433(res.iterator().next());
 
     }
+
+    @Test
+     public void testSearchByOtherProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
+        addProjectPXD000433ToIndex();
+
+        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
+        Collection<? extends ProjectProvider> res =
+                projectSearchDao.searchProjectAny(
+                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + UNIPROT_ACCESSION,
+                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
+                        null,
+                        0,
+                        1,
+                        SearchFields.ACCESSION.getIndexName(),
+                        "desc"
+                );
+        // check we found one project
+        assertEquals(1, res.size());
+        // check that is PXD000433
+        checkIsProjectPXD000433(res.iterator().next());
+
+    }
+
+    @Test
+    public void testSearchByUniprotProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
+        addProjectPXD000433ToIndex();
+
+        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
+        Collection<? extends ProjectProvider> res =
+                projectSearchDao.searchProjectAny(
+                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + OTHER_ACCESSION,
+                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
+                        null,
+                        0,
+                        1,
+                        SearchFields.ACCESSION.getIndexName(),
+                        "desc"
+                );
+        // check we found one project
+        assertEquals(1, res.size());
+        // check that is PXD000433
+        checkIsProjectPXD000433(res.iterator().next());
+
+    }
+
 
     @Test
     public void testSearchByPeptide() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
@@ -297,33 +348,24 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
                 )
         );
 
-        Map<String, Map<String, ProteinReferenceProvider>> proteinReferences =
-                MzTabDataProviderReader.readProteinIdentificationsFromMzTabFilesDirectory(
-                        generatedDirectory
-                );
-
-
-        //Approach for testing purposes
-        Map<String, LinkedList<Psm>> psmByAssay =
-        uk.ac.ebi.pride.psmindex.search.util.MzTabDataProviderReader.readPsmsFromMzTabFilesDirectory(
-                PROJECT_PXD000433_ACCESSION, generatedDirectory);
-
-        //For now we don't allow duplicated sequences
-        Set<PeptideSequenceProvider> peptideSequences = new HashSet<PeptideSequenceProvider>();
-
-        if(psmByAssay!=null) {
-            for (LinkedList<Psm> psms : psmByAssay.values()) {
-                for (Psm psm : psms) {
-                    SolrPeptideSequence peptideSequence = new SolrPeptideSequence();
-                    peptideSequence.setPeptideSequence(psm.getPeptideSequence());
-                    peptideSequences.add(peptideSequence);
-                }
-            }
+        if(proteinReferencesPXD000433 == null){
+          proteinReferencesPXD000433 = MzTabDataProviderReader.readProteinIdentificationsFromMzTabFilesDirectory(
+                  PROJECT_PXD000433_ACCESSION,
+                  generatedDirectory
+          );
         }
+
+
+        if(peptideSequencesPXD000433 == null){
+            peptideSequencesPXD000433 = MzTabDataProviderReader.readPsmsFromMzTabFilesDirectory(
+                PROJECT_PXD000433_ACCESSION,
+                generatedDirectory);
+        }
+
 
         //add a new project to index
         ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null, null, null);
-        projectIndexDao.addProject(solrProject, null, proteinReferences, peptideSequences );
+        projectIndexDao.addProject(solrProject, null, proteinReferencesPXD000433, peptideSequencesPXD000433);
 
     }
 
@@ -345,26 +387,23 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
                 )
         );
 
-        Map<String, Map<String, ProteinReferenceProvider>> proteinReferences =
-                MzTabDataProviderReader.readProteinIdentificationsFromMzTabFilesDirectory(
-                        generatedDirectory
-                );
+        if (proteinReferencesPXD000581 == null) {
+            proteinReferencesPXD000581 = MzTabDataProviderReader.readProteinIdentificationsFromMzTabFilesDirectory(
+                    PROJECT_PXD000581_ACCESSION,
+                    generatedDirectory
+            );
+        }
 
-        //Approach for testing purposes
-        LinkedList<Psm> psmByAssay = MzTabDataProviderReader.readPsmsFromMzTabFilesDirectory(PROJECT_PXD000581_ACCESSION, generatedDirectory);
-
-        //For now we don't allow duplicated sequences
-        Set<PeptideSequenceProvider> peptideSequences = new HashSet<PeptideSequenceProvider>();
-
-        for (Psm psm : psmByAssay) {
-            SolrPeptideSequence peptideSequence = new SolrPeptideSequence();
-            peptideSequence.setPeptideSequence(psm.getPeptideSequence());
-            peptideSequences.add(peptideSequence);
+        if (peptideSequencesPXD000581 == null) {
+            peptideSequencesPXD000581 = MzTabDataProviderReader.readPsmsFromMzTabFilesDirectory(
+                    PROJECT_PXD000581_ACCESSION,
+                    generatedDirectory
+            );
         }
 
         //add a new project to index
         ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null, null, null);
-        projectIndexDao.addProject(solrProject, null, proteinReferences, peptideSequences );
+        projectIndexDao.addProject(solrProject, null, proteinReferencesPXD000581, peptideSequencesPXD000581);
 
     }
 }

@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.archive.search.util.modelmapper;
 
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.PeptideSequenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinIdentificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.search.model.SolrProject;
@@ -25,22 +25,16 @@ public class SolrProjectMapper extends SolrProject {
 
     public static final String NODOI = "noDOI";
 
-    @Deprecated
     public SolrProjectMapper(ProjectProvider project, Collection<? extends AssayProvider> assays,
-                             Collection<? extends ProteinIdentificationProvider> proteinIdentifications) {
-        initMethod(project, assays, proteinIdentifications, null);
-    }
-
-    public SolrProjectMapper(ProjectProvider project, Collection<? extends AssayProvider> assays,
-                             Collection<? extends ProteinIdentificationProvider> proteinIdentifications,
+                             Collection<? extends ProteinReferenceProvider> proteinReferences,
                              Collection<? extends PeptideSequenceProvider> peptideSequences) {
-        initMethod(project, assays, proteinIdentifications, peptideSequences);
+        initMethod(project, assays, proteinReferences, peptideSequences);
     }
 
 
     //initialize attributes from Project object
     private void initMethod(ProjectProvider project, Collection<? extends AssayProvider> assays,
-                            Collection<? extends ProteinIdentificationProvider> proteinIdentifications,
+                            Collection<? extends ProteinReferenceProvider> proteinReferences,
                             Collection<? extends PeptideSequenceProvider> peptideSequences){
         this.setAccession(project.getAccession());
         this.setDoi(project.getDoi());
@@ -119,8 +113,8 @@ public class SolrProjectMapper extends SolrProject {
         if (project.getPublicationDate() != null) this.setPublicationDate(project.getPublicationDate());
 
         // protein identifications
-        if (proteinIdentifications != null) {
-            this.setProteinIdentifications(proteinIdentifications);
+        if (proteinReferences != null) {
+            this.setProteinIdentifications(proteinReferences);
         }
 
         // peptide sequences
@@ -172,8 +166,4 @@ public class SolrProjectMapper extends SolrProject {
         }
         return pubmedIds;    //To change body of overridden methods use File | Settings | File Templates.
     }
-
-
-
-
 }

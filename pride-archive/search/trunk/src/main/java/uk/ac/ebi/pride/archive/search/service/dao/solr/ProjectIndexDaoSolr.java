@@ -16,19 +16,18 @@ import uk.ac.ebi.pride.archive.repo.assay.AssayRepository;
 import uk.ac.ebi.pride.archive.repo.project.ProjectRepository;
 import uk.ac.ebi.pride.archive.search.model.SolrPeptideSequence;
 import uk.ac.ebi.pride.archive.search.model.SolrProject;
-import uk.ac.ebi.pride.archive.search.util.modelmapper.SolrProjectMapper;
-import uk.ac.ebi.pride.archive.search.model.SolrProteinIdentification;
 import uk.ac.ebi.pride.archive.search.service.dao.ProjectIndexDao;
 import uk.ac.ebi.pride.archive.search.util.CvParamHelperMethods;
 import uk.ac.ebi.pride.archive.search.util.SolrQueryFactory;
-
+import uk.ac.ebi.pride.archive.search.util.modelmapper.SolrProjectMapper;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
 import uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService;
-import uk.ac.ebi.pride.proteinindex.search.synonyms.ProteinAccessionSynonymsFinder;
 import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jose A. Dianes
@@ -45,7 +44,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
     private ProteinIdentificationSearchService proteinIdentificationSearchService;
     private PsmSearchService psmSearchService;
 
-    private final static int STEP = 89;
 
     @Deprecated
     public ProjectIndexDaoSolr(SolrServer projectServer,
@@ -126,40 +124,16 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
     @Override
     public void addProject(ProjectProvider project,
                            Collection<? extends AssayProvider> assays,
-                           Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences // a Map from assay accessions to protein references
-    ) {
-        try {
-
-            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays, createProteinIdentificationListFromReferencesMap(proteinReferences,project));
-            // populate relatives
-            if (ontologyTermSearchService != null)
-                CvParamHelperMethods.populateRelatives(solrProject, ontologyTermSearchService);
-            projectServer.addBean(solrProject);
-            projectServer.commit();
-        } catch (SolrServerException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    @Override
-    public void addProject(ProjectProvider project,
-                           Collection<? extends AssayProvider> assays,
-                           Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences,
+                           Collection<? extends ProteinReferenceProvider> proteinReferences,
                            Collection<? extends PeptideSequenceProvider> peptideSequences) {
 
         //TODO Check if need to be deleted
         try {
-            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays,
-                    createProteinIdentificationListFromReferencesMap(proteinReferences,project),
-                    peptideSequences);
+            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays, proteinReferences, peptideSequences);
 
             // populate relatives
             if (ontologyTermSearchService != null)
                 CvParamHelperMethods.populateRelatives(solrProject, ontologyTermSearchService);
-
-            // TODO - get synonyms?
 
             projectServer.addBean(solrProject);
             projectServer.commit();
@@ -169,56 +143,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-    }
-
-    @Override
-    public void addProject(ProjectProvider project,
-                           Collection<? extends AssayProvider> assays) {
-        try {
-            //create the solr object with proteins and peptide sequences
-            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays,
-                    getProteinIdentificationsForProject(project),
-                    getPeptideSequencesForProject(project));
-
-            // populate relatives
-            if (ontologyTermSearchService != null)
-                CvParamHelperMethods.populateRelatives(solrProject, ontologyTermSearchService);
-
-            // TODO - get synonyms?
-
-            projectServer.addBean(solrProject);
-            projectServer.commit();
-        } catch (SolrServerException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    private long getTotalProteinCount(Map<String, Collection<ProteinIdentificationProvider>> proteinReferences) {
-        long res = 0;
-        if (proteinReferences != null) {
-            for (Map.Entry<String, Collection<ProteinIdentificationProvider>> proteinIdentificationEntry : proteinReferences.entrySet()) {
-                res = res + proteinIdentificationEntry.getValue().size();
-            }
-        }
-        return res;
-    }
-
-    private long getTotalProteinSynonymCount(Map<String, Collection<ProteinIdentificationProvider>> proteinReferences) {
-        long res = 0;
-
-        if (proteinReferences != null) {
-            for (Map.Entry<String, Collection<ProteinIdentificationProvider>> proteinIdentificationEntry : proteinReferences.entrySet()) {
-                for (ProteinIdentificationProvider proteinIdentificationProvider : proteinIdentificationEntry.getValue()) {
-                    if (proteinIdentificationProvider.getSynonyms() != null) {
-                        res = res + proteinIdentificationProvider.getSynonyms().size();
-                    }
-                }
-            }
-        }
-
-        return res;
     }
 
     private void deleteIndex() {
@@ -259,34 +183,11 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         //because the field is indexed but not stored
 
         logger.info("Project accession: " + solrProject.getAccession());
-//        logger.info("Protein identifications count: " + getTotalProteinCount(solrProject.getProteinIdentifications()));
-//        logger.info("Protein synonyms count: " + getTotalProteinSynonymCount(solrProject.getProteinIdentifications()));
 
         projectServer.addBean(solrProject);
         projectServer.commit();
         logger.info("Indexed project " + solrProject.getAccession());
     }
-
-//    private List<ProteinIdentificationProvider> buildProteinIdentificationItems(List<ProteinIdentification> proteinIdentification, ProjectProvider project) {
-//        LinkedList<ProteinIdentificationProvider> res = new LinkedList<ProteinIdentificationProvider>();
-//
-//        for (ProteinIdentification protein: proteinIdentification) {
-//            for (String assayAccession: protein.getAssayAccessions()) {
-//                SolrProteinIdentification proteinIdentification = new SolrProteinIdentification();
-//                proteinIdentification.setAccession(protein.getAccession());
-//                proteinIdentification.setProjectAccession(project.getAccession());
-//                proteinIdentification.setAssayAccession(assayAccession);
-//                proteinIdentification.setSynonyms(protein.getSynonyms());
-//                if (proteinIdentification.getSynonyms() == null) {
-//                    proteinIdentification.setSynonyms(new LinkedHashSet<String>());
-//                }
-//                proteinIdentification.getSynonyms().add(proteinIdentification.getAccession()); // add the accession, for safety (this should be added already in the synonyms)
-//                res.add(proteinIdentification);
-//            }
-//        }
-//
-//        return res;
-//    }
 
     private List<? extends ProteinIdentificationProvider> getProteinIdentificationsForProject(ProjectProvider project) {
         List<ProteinIdentification> proteinIdentifications = new LinkedList<ProteinIdentification>();
@@ -326,33 +227,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
                 res.add(peptideSequence);
             }
         }
-        return res;
-    }
-
-    private Collection<? extends ProteinIdentificationProvider> createProteinIdentificationListFromReferencesMap(
-            Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences,
-            ProjectProvider project
-    ) {
-        Collection<ProteinIdentificationProvider> res = new LinkedList<ProteinIdentificationProvider>();
-
-        if(proteinReferences!= null) {
-            for (Map.Entry<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferencesEntry : proteinReferences.entrySet()) {
-                String assayAccession = proteinReferencesEntry.getKey();
-                // get synonyms
-                ProteinAccessionSynonymsFinder.getAllSynonyms(proteinReferencesEntry.getValue());
-                // create the protein identification provider instance
-                for (ProteinReferenceProvider proteinReference : proteinReferencesEntry.getValue().values()) {
-                    SolrProteinIdentification solrProteinIdentification = new SolrProteinIdentification();
-                    solrProteinIdentification.setAccession(proteinReference.getAccession());
-                    solrProteinIdentification.setProjectAccession(project.getAccession());
-                    solrProteinIdentification.setAssayAccession(assayAccession);
-                    solrProteinIdentification.setSynonyms(proteinReference.getSynonyms());
-
-                    res.add(solrProteinIdentification);
-                }
-            }
-        }
-
         return res;
     }
 

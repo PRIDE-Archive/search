@@ -6,7 +6,6 @@ import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvi
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Jose A. Dianes
@@ -20,16 +19,8 @@ public interface ProjectIndexDao {
 
     void addProject(ProjectProvider project,
                     Collection<? extends AssayProvider> assays,
-                    Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences // a Map from assay accessions to protein references
-    );
-
-    void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays,
-                    Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences, // a Map from assay accessions to protein references
+                    Collection<? extends ProteinReferenceProvider> proteinReferences, // a Map from assay accessions to protein references
                     Collection<? extends PeptideSequenceProvider> peptideSequences
     );
 
-    void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays
-    );
 }

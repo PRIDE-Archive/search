@@ -3,13 +3,12 @@ package uk.ac.ebi.pride.archive.search.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.pride.archive.dataprovider.assay.AssayProvider;
-import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
-import uk.ac.ebi.pride.archive.search.service.dao.ProjectIndexDao;
 import uk.ac.ebi.pride.archive.dataprovider.identification.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
+import uk.ac.ebi.pride.archive.search.service.dao.ProjectIndexDao;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Jose A. Dianes
@@ -36,22 +35,9 @@ public class ProjectIndexService {
 
     public void addProject(ProjectProvider project,
                     Collection<? extends AssayProvider> assays,
-                    Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences // a Map from assay accessions to protein references
-    ) {
-        this.projectIndexDao.addProject(project,assays,proteinReferences);
-    }
-
-    public void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays,
-                    Map<String, ? extends Map<String, ? extends ProteinReferenceProvider>> proteinReferences, // a Map from assay accessions to protein references
+                    Collection<? extends ProteinReferenceProvider> proteinReferences,
                     Collection<? extends PeptideSequenceProvider> peptideSequences
     ) {
-        this.addProject(project,assays,proteinReferences,peptideSequences);
-    }
-
-    public void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays
-    ) {
-        this.addProject(project,assays);
+        this.projectIndexDao.addProject(project,assays, proteinReferences, peptideSequences);
     }
 }

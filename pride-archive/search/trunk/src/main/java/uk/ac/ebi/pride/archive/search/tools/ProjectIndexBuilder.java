@@ -5,15 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.pride.archive.search.service.ProjectIndexService;
 import uk.ac.ebi.pride.archive.ontology.search.service.OntologyTermSearchService;
 import uk.ac.ebi.pride.archive.repo.assay.AssayRepository;
 import uk.ac.ebi.pride.archive.repo.project.ProjectRepository;
+import uk.ac.ebi.pride.archive.search.service.ProjectIndexService;
 import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectIndexDaoSolr;
 import uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService;
 import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
-
-import java.io.File;
 
 /**
  * @author Jose A. Dianes
@@ -35,9 +33,6 @@ public class ProjectIndexBuilder {
     private PsmSearchService psmSearchService;
     @Autowired
     private ProteinIdentificationSearchService proteinIdentificationSearchService;
-
-    @Autowired
-    private File submissionsDirectory;
 
     /*
     HttpSolrServer is thread-safe and if you are using the following constructor,
