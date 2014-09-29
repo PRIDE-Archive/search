@@ -50,10 +50,10 @@
 	</organization>
 
     <properties>
-        <jmztab.version>3.0.1-SNAPSHOT</jmztab.version>
+        <jmztab.version>3.0.1</jmztab.version>
         <archive.repo.version>0.1.18</archive.repo.version>
         <archive.data.provider.api.version>2.0.6-SNAPSHOT</archive.data.provider.api.version>
-        <protein.index.search.version>0.2.1-SNAPSHOT</protein.index.search.version>
+        <!--<protein.catalog.index.search.version>0.2.1-SNAPSHOT</protein.catalog.index.search.version>-->
         <protein.identification.index.search.version>0.1.1-SNAPSHOT</protein.identification.index.search.version>
         <psm.index.search.version>0.1.5-SNAPSHOT</psm.index.search.version>
         <ontology.index.search.version>0.1.1</ontology.index.search.version>
@@ -166,12 +166,12 @@
     <dependencies>
 
         <!-- ##### PRIDE dependencies ##### ##### ##### ##### ##### -->
-        <!-- protein-index-search -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>protein-index-search</artifactId>
-            <version>${protein.index.search.version}</version>
-        </dependency>
+        <!-- protein-catalog-index-search -->
+        <!--<dependency>-->
+            <!--<groupId>uk.ac.ebi.pride</groupId>-->
+            <!--<artifactId>protein-catalog-index-search</artifactId>-->
+            <!--<version>${protein.catalog.index.search.version}</version>-->
+        <!--</dependency>-->
         <!-- protein-identification-index-search -->
         <dependency>
             <groupId>uk.ac.ebi.pride</groupId>

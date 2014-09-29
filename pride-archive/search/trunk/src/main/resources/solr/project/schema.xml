@@ -102,7 +102,7 @@
                multiValued="false"/>
         <field name="project_description" type="text_general" indexed="true" stored="true" required="false"
                multiValued="false"/>
-        <field name="project_tags" type="text_general" indexed="true" stored="true" required="false"
+        <field name="project_tags" type="string" indexed="true" stored="true" required="false"
                multiValued="true"/>
         <field name="project_tags_as_text" type="text_general" indexed="true" stored="true" required="false"
                multiValued="true"/>
