@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.archive.search.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
@@ -132,7 +131,6 @@ public class ProjectSearchService {
         //tags names
         if (solrProject.getProjectTagNames() != null)
              projectSearchSummary.setProjectTagNames(new HashSet<String>(solrProject.getProjectTagNames()));
-
 
         return projectSearchSummary;
     }
