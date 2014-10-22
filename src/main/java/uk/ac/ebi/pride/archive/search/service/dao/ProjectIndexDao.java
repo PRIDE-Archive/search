@@ -23,4 +23,6 @@ public interface ProjectIndexDao {
                     Collection<? extends PeptideSequenceProvider> peptideSequences
     );
 
+
+    void addProject(ProjectProvider project);
 }

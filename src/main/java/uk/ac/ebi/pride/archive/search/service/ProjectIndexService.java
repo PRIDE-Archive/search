@@ -18,6 +18,7 @@ import java.util.Collection;
 public class ProjectIndexService {
 
     private static Logger logger = LoggerFactory.getLogger(ProjectIndexService.class.getName());
+
     private ProjectIndexDao projectIndexDao;
 
     public ProjectIndexService(ProjectIndexDao projectIndexDao) {
@@ -39,5 +40,9 @@ public class ProjectIndexService {
                     Collection<? extends PeptideSequenceProvider> peptideSequences
     ) {
         this.projectIndexDao.addProject(project,assays, proteinReferences, peptideSequences);
+    }
+
+    public void addProject(ProjectProvider project) {
+        this.projectIndexDao.addProject(project);
     }
 }
