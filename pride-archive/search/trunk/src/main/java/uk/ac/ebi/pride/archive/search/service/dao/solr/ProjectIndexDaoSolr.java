@@ -65,7 +65,11 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
                                OntologyTermSearchService ontologyTermSearchService,
                                ProteinIdentificationSearchService proteinIdentificationSearchService,
                                PsmSearchService psmSearchService) {
-        this(projectServer, projectRepository, assayRepository, ontologyTermSearchService, proteinIdentificationSearchService);
+        this.projectServer = projectServer;
+        this.projectRepository = projectRepository;
+        this.assayRepository = assayRepository;
+        this.ontologyTermSearchService = ontologyTermSearchService;
+        this.proteinIdentificationSearchService = proteinIdentificationSearchService;
         this.psmSearchService = psmSearchService;
 
     }
@@ -143,6 +147,17 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
+    }
+
+    @Override
+    public void addProject(ProjectProvider project) {
+        try {
+            createAndIndexSolrProject(project);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        }
     }
 
     private void deleteIndex() {
