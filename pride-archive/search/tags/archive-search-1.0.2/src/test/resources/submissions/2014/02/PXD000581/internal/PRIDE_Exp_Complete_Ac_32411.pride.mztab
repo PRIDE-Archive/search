@@ -1,0 +1,42 @@
+MTD	mzTab-version	1.0
+MTD	mzTab-mode	Complete
+MTD	mzTab-type	Identification
+MTD	mzTab-ID	PXD000581-32411
+MTD	title	MALDI TOF/TOF analysis of 2D gel A2 Part2 Spot 121
+MTD	description	Combined Proteomic and Transcriptomic Interrogation of the Venom Gland of Conus geographus Uncovers Novel Components and Functional Compartmentalization
+MTD	sample_processing[1]	[FIX, FIX:0000886, two-dimensional polyacrylamide gel electrophoresis, ]
+MTD	instrument[1]-name	[MS, MS:1000031, Instrument model, Ultraflex III MALDI TOF/TOF]
+MTD	instrument[1]-source	[FIX, FIX:0000081, matrix-assisted laser desorption/ionization mass spectrometry, ]
+MTD	instrument[1]-analyzer[1]	[MS, MS:1000287, time-of-flight mass spectrometer, ]
+MTD	instrument[1]-detector	[MS, MS:1000705, ultraflex III TOF/TOF, ]
+MTD	software[1]	[MS, MS:1001456, analysis software, Matrix Science Mascot v2.2.04]
+MTD	protein_search_engine_score[1]	[MS, MS:1001171, Mascot:score, ]
+MTD	psm_search_engine_score[1]	[PRIDE, PRIDE:0000069, Mascot score, ]
+MTD	contact[1]-name	Helena Safavi-Hemami
+MTD	contact[1]-affiliation	University of Melbourne
+MTD	contact[1]-email	helenasafavi@gmx.de
+MTD	contact[2]-name	Paul Veith
+MTD	contact[2]-affiliation	University of Melbourne
+MTD	contact[2]-email	pdv@unimelb.edu.au
+MTD	uri[1]	http://www.ebi.ac.uk/pride/archive/assays/32411
+MTD	fixed_mod[1]	[MS, MS:1002453, No fixed modifications searched, ]
+MTD	variable_mod[1]	[MS, MS:1002454, No variable modifications searched, ]
+MTD	ms_run[1]-format	[MS, MS:1000564, PSI mzData file, ]
+MTD	ms_run[1]-location	file:/PRIDE_Exp_Complete_Ac_32411.xml
+MTD	ms_run[1]-id_format	[MS, MS:1000777, spectrum identifier nativeID format, ]
+MTD	sample[1]-species[1]	[NEWT, 6491, Conus geographus (Geography cone) (Nubecula geographus), ]
+MTD	sample[1]-tissue[1]	[BTO, BTO:0001440, venom gland, ]
+MTD	assay[1]-sample_ref	sample[1]
+MTD	assay[1]-ms_run_ref	ms_run[1]
+MTD	custom[1]	[, , Date of export, Mon Jun 30 08:10:44 BST 2014]
+MTD	custom[2]	[, , Original converted file, file:/nfs/pride/prod/archive/2014/02/PXD000581/submitted/PRIDE_Exp_Complete_Ac_32411.xml]
+MTD	custom[3]	[, , Project title, Combined Proteomic and Transcriptomic Interrogation of the Venom Gland of Conus geographus]
+
+PRH	accession	description	taxid	species	database	database_version	search_engine	best_search_engine_score[1]	search_engine_score[1]_ms_run[1]	num_psms_ms_run[1]	num_peptides_distinct_ms_run[1]	num_peptides_unique_ms_run[1]	ambiguity_members	modifications	protein_coverage	opt_global_cv_PRIDE:0000303_Decoy_hit
+PRT	seg1-isotig00248_69	null	null	null	ENSEMBL	1	[MS, MS:1001207, Mascot, ]	138.88	138.88	3	3	null	seg2-isotig00152_69	null	0.0	0
+
+PSH	sequence	PSM_ID	accession	unique	database	database_version	search_engine	search_engine_score[1]	modifications	retention_time	charge	exp_mass_to_charge	calc_mass_to_charge	spectra_ref	pre	post	start	end	opt_global_cv_MS:1002217_decoy_peptide
+PSM	LYGILNHANAPVTR	3	seg1-isotig00248_69	null	ENSEMBL	1	[MS, MS:1001207, Mascot, ]	52.28	null	null	1	1538.8636	1538.8443099999997	ms_run[1]:spectrum=3	K	V	80	93	0
+PSM	FLTDRYPISGIFSGK	4	seg1-isotig00248_69	null	ENSEMBL	1	[MS, MS:1001207, Mascot, ]	58.66	null	null	1	1700.9279	1700.9011499999997	ms_run[1]:spectrum=4	K	L	65	79	0
+PSM	VHAASTAGPFPDNAVVAR	5	seg1-isotig00248_69	null	ENSEMBL	1	[MS, MS:1001207, Mascot, ]	79.94	null	null	1	1779.9397	1779.91416	ms_run[1]:spectrum=5	K	H	102	119	0
+
