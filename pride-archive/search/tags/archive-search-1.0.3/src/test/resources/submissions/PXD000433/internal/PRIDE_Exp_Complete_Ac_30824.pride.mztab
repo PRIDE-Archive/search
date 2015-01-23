@@ -1,0 +1,91 @@
+MTD	mzTab-version	1.0
+MTD	mzTab-mode	Complete
+MTD	mzTab-type	Identification
+MTD	mzTab-ID	PXD000433-30824
+MTD	title	Quantitative phosphoproteomics of Phytophthora infestans life stages (1/27)
+MTD	description	The oomycete Phytophthora infestans is the causal agent of late blight in potato and tomato. Since the underlying processes that govern pathogenicity and development in P. infestans are largely unknown, we have performed a large-scale phosphoproteomics study of six different P. infestans life stages. We have obtained quantitative data for 2922 phosphopeptides and compared their abundance in different life stages.        The samples were analysed on an LTQ Orbitrap XL ETD, operated in data dependent mode to automatically perform Orbitrap-MS and LTQ-MS/MS analysis.        The raw data from the Orbitrap was converted to .mgf files using ProteoWizard. The Proteios software environment was used to search the mgf files with Mascot version 2.3.01 against a database consisting of all P. infestans proteins in UniProt as of 2010-04-22, concatenated with an equal size decoy database (random protein sequences with conserved protein length and amino acid distribution, in total 36,512 target and decoy protein entries). Search tolerances were set to 7 ppm for MS and 0.5 Da for MS/MS. One missed cleavage was allowed. Carbamidomethylation of cysteine residues was selected as a fixed modification and oxidation of methionine residues and phosphorylation of serine, threonine and tyrosine residues were selected as variable modifications. Search results were exported from Mascot as XML, including query level results, with a modification to the export script to include protein accession numbers also for the query (spectrum) level results. All search results, including the top ranked peptide for each spectrum, were imported to Proteios, where q values were calculated using the target-decoy method.
+MTD	sample_processing[1]	[PRIDE, PRIDE:0000025, Reduction, dithiothreitol]
+MTD	sample_processing[2]	[PRIDE, PRIDE:0000026, Alkylation, iadoacetamide]
+MTD	sample_processing[3]	[PRIDE, PRIDE:0000024, Enzyme digestion, Trypsin]
+MTD	instrument[1]-name	[MS, MS:1000031, Instrument model, LTQ Orbitrap XL]
+MTD	instrument[1]-source	[MS, MS:1000398, nanoelectrospray, ]
+MTD	instrument[1]-analyzer[1]	[MS, MS:1000083, radial ejection linear ion trap, ]
+MTD	instrument[1]-detector	[MS, MS:1000253, electron multiplier, ]
+MTD	software[1]	[MS, MS:1001456, analysis software, Proteios SE v2.19.0-dev build 4516]
+MTD	protein_search_engine_score[1]	[MS, MS:1001171, Mascot:score, ]
+MTD	psm_search_engine_score[1]	[PRIDE, PRIDE:0000069, Mascot score, ]
+MTD	contact[1]-name	Fredrik Levander
+MTD	contact[1]-affiliation	Lund University
+MTD	contact[1]-email	fredrik.levander@immun.lth.se
+MTD	uri[1]	http://www.ebi.ac.uk/pride/archive/assays/30824
+MTD	fixed_mod[1]	[MS, MS:1002453, No fixed modifications searched, ]
+MTD	variable_mod[1]	[MS, MS:1002454, No variable modifications searched, ]
+MTD	ms_run[1]-format	[MS, MS:1000564, PSI mzData file, ]
+MTD	ms_run[1]-location	file:/PRIDE_Exp_Complete_Ac_30824.xml
+MTD	ms_run[1]-id_format	[MS, MS:1000777, spectrum identifier nativeID format, ]
+MTD	sample[1]-species[1]	[NEWT, 4787, Phytophthora infestans, ]
+MTD	assay[1]-sample_ref	sample[1]
+MTD	assay[1]-ms_run_ref	ms_run[1]
+MTD	custom[1]	[, , Date of export, Mon Jun 30 08:13:10 BST 2014]
+MTD	custom[2]	[, , Original converted file, file:/nfs/pride/prod/archive/2014/03/PXD000433/submitted/PRIDE_Exp_Complete_Ac_30824.xml]
+MTD	custom[3]	[, , Project title, Quantitative phosphoproteomics of Phytophthora infestans life stages]
+
+PRH	accession	description	taxid	species	database	database_version	search_engine	best_search_engine_score[1]	search_engine_score[1]_ms_run[1]	num_psms_ms_run[1]	num_peptides_distinct_ms_run[1]	num_peptides_unique_ms_run[1]	ambiguity_members	modifications	protein_coverage	opt_global_cv_PRIDE:0000303_Decoy_hit
+PRT	A5A5Z5	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	5	5	null	D0NUK6	MOD:00412,MOD:00696	0.0	0
+PRT	A7XGB9	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	20	15	null	Q697Y4	MOD:00412,MOD:01214	0.0	0
+PRT	A7XGC0	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	17	16	null	null	MOD:00412,MOD:01214	0.0	0
+PRT	D0MQ64	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	3	3	null	null	MOD:00696	0.0	0
+PRT	D0MQ72	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	3	3	null	null	null	0.0	0
+PRT	D0MQE0	null	null	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.0	0.0	2	2	null	null	MOD:00412,MOD:00696,MOD:01214	0.0	0
+
+PSH	sequence	PSM_ID	accession	unique	database	database_version	search_engine	search_engine_score[1]	modifications	retention_time	charge	exp_mass_to_charge	calc_mass_to_charge	spectra_ref	pre	post	start	end	opt_global_cv_MS:1002217_decoy_peptide
+PSM	HAKEGGVSMK	62	A5A5Z5	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	1.15	8-MOD:00696	null	null	562.2548828125	null	ms_run[1]:spectrum=62	null	null	null	null	0
+PSM	NYYEPSFR	3518	A5A5Z5	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	15.13	6-MOD:00696	null	null	578.2277221679688	null	ms_run[1]:spectrum=3518	null	null	null	null	0
+PSM	FMDSGVQGPDGK	1766	A5A5Z5	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	30.72	2-MOD:00412,4-MOD:00696	null	null	667.2597045898438	null	ms_run[1]:spectrum=1766	null	null	null	null	0
+PSM	MSQYNDSIAGVR	2613	A5A5Z5	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	20.65	1-MOD:00412,7-MOD:00696	null	null	718.7980346679688	null	ms_run[1]:spectrum=2613	null	null	null	null	0
+PSM	TYMSTTSFVDPK	3135	A5A5Z5	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	13.61	3-MOD:00412,7-MOD:00696	null	null	736.8028564453125	null	ms_run[1]:spectrum=3135	null	null	null	null	0
+PSM	QMIVAINK	1784	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	6.9	2-MOD:00412	null	null	466.7652587890625	null	ms_run[1]:spectrum=1784	null	null	null	null	0
+PSM	GFVASDSK	619	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	18.89	null	null	null	405.70306396484375	null	ms_run[1]:spectrum=619	null	null	null	null	0
+PSM	FKEITEK	738	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	23.82	null	null	null	447.7499084472656	null	ms_run[1]:spectrum=738	null	null	null	null	0
+PSM	RGFVASDSK	362	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.98	null	null	null	483.7535705566406	null	ms_run[1]:spectrum=362	null	null	null	null	0
+PSM	LPLQDVYK	3307	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	31.07	null	null	null	488.280029296875	null	ms_run[1]:spectrum=3307	null	null	null	null	0
+PSM	IGGIGTVPVGR	2987	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	43.95	null	null	null	513.3089599609375	null	ms_run[1]:spectrum=2987	null	null	null	null	0
+PSM	GFVASDSKNDPAK	896	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	49.48	null	null	null	668.3311157226562	null	ms_run[1]:spectrum=896	null	null	null	null	0
+PSM	YFFTVIDAPGHR	4228	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	16.31	null	null	null	711.8639526367188	null	ms_run[1]:spectrum=4228	null	null	null	null	0
+PSM	VETGVIKPGMVATFGPVGLSTEVK	4579	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	5.93	null	null	null	806.1129150390625	null	ms_run[1]:spectrum=4579	null	null	null	null	0
+PSM	VETGVIKPGMVATFGPVGLSTEVK	4410	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	18.66	10-MOD:00412	null	null	811.4429931640625	null	ms_run[1]:spectrum=4410	null	null	null	null	0
+PSM	SVEMHHESLPEAVPGDNVGFNVK	3599	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	18.65	4-MOD:00412	null	null	627.80126953125	null	ms_run[1]:spectrum=3599	null	null	null	null	0
+PSM	SVEMHHESLPEAVPGDNVGFNVK	3603	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	11.32	4-MOD:00412	null	null	836.7329711914062	null	ms_run[1]:spectrum=3603	null	null	null	null	0
+PSM	NMITGTSQADCAILVVASGVGEFEAGISK	4948	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	29.18	11-MOD:01214	null	null	1463.22021484375	null	ms_run[1]:spectrum=4948	null	null	null	null	0
+PSM	NMITGTSQADCAILVVASGVGEFEAGISK	4946	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	47.82	11-MOD:01214	null	null	975.8193359375	null	ms_run[1]:spectrum=4946	null	null	null	null	0
+PSM	NMITGTSQADCAILVVASGVGEFEAGISK	4962	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	30.81	11-MOD:01214,2-MOD:00412	null	null	981.147216796875	null	ms_run[1]:spectrum=4962	null	null	null	null	0
+PSM	NMITGTSQADCAILVVASGVGEFEAGISK	4920	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	5.4	11-MOD:01214,2-MOD:00412	null	null	1471.2193603515625	null	ms_run[1]:spectrum=4920	null	null	null	null	0
+PSM	NMITGTSQADCAILVVASGVGEFEAGISK	4919	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	42.38	11-MOD:01214,2-MOD:00412	null	null	981.1492919921875	null	ms_run[1]:spectrum=4919	null	null	null	null	0
+PSM	QMVVAINK	2643	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	2.55	null	null	null	451.760009765625	null	ms_run[1]:spectrum=2643	null	null	null	null	0
+PSM	QMVVAINK	2182	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	6.46	null	null	null	451.760009765625	null	ms_run[1]:spectrum=2182	null	null	null	null	0
+PSM	QMVVAINK	1318	A7XGB9	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	4.75	2-MOD:00412	null	null	459.7575378417969	null	ms_run[1]:spectrum=1318	null	null	null	null	0
+PSM	ITCKVGK	2911	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.37	3-MOD:01214	null	null	403.231689453125	null	ms_run[1]:spectrum=2911	null	null	null	null	0
+PSM	FMVEK	890	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	6.23	2-MOD:00412	null	null	335.16729736328125	null	ms_run[1]:spectrum=890	null	null	null	null	0
+PSM	GVLNAVK	1681	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	11.86	null	null	null	350.7209777832031	null	ms_run[1]:spectrum=1681	null	null	null	null	0
+PSM	YNLDFK	3152	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	6.1	null	null	null	400.20281982421875	null	ms_run[1]:spectrum=3152	null	null	null	null	0
+PSM	NFTEAMK	1692	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	4.24	null	null	null	420.699462890625	null	ms_run[1]:spectrum=1692	null	null	null	null	0
+PSM	AAGYTNQVR	759	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	36.39	null	null	null	490.2518005371094	null	ms_run[1]:spectrum=759	null	null	null	null	0
+PSM	IGSEVYHNLK	1866	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	17.19	null	null	null	387.2082214355469	null	ms_run[1]:spectrum=1866	null	null	null	null	0
+PSM	NVNEIIAPALIGK	4347	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	21.39	null	null	null	676.40087890625	null	ms_run[1]:spectrum=4347	null	null	null	null	0
+PSM	LAMQEFMILPVGAK	4322	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	9.62	3-MOD:00412,7-MOD:00412	null	null	790.4127807617188	null	ms_run[1]:spectrum=4322	null	null	null	null	0
+PSM	DVQIVGDDLTVTNPTR	4118	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	39.15	null	null	null	871.950439453125	null	ms_run[1]:spectrum=4118	null	null	null	null	0
+PSM	AAVPSGASTGEFEALEMR	3943	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	17.59	17-MOD:00412	null	null	919.9337768554688	null	ms_run[1]:spectrum=3943	null	null	null	null	0
+PSM	VNQIGSITESIEAVTMAK	4725	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	16.83	16-MOD:00412	null	null	953.991943359375	null	ms_run[1]:spectrum=4725	null	null	null	null	0
+PSM	LGMDVAASEFYTGAEDAR	3974	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	12.67	3-MOD:00412	null	null	640.2888793945312	null	ms_run[1]:spectrum=3974	null	null	null	null	0
+PSM	LGMDVAASEFYTGAEDAR	3970	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	56.4	3-MOD:00412	null	null	959.9310913085938	null	ms_run[1]:spectrum=3970	null	null	null	null	0
+PSM	VGKDVQIVGDDLTVTNPTR	3666	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	7.35	null	null	null	676.3633422851562	null	ms_run[1]:spectrum=3666	null	null	null	null	0
+PSM	SGETEDTFIADLAVGLSAGQIK	4897	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	42.33	null	null	null	1111.566162109375	null	ms_run[1]:spectrum=4897	null	null	null	null	0
+PSM	ACNALLLK	2643	A7XGC0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.6	2-MOD:01214	null	null	451.760009765625	null	ms_run[1]:spectrum=2643	null	null	null	null	0
+PSM	GGAHHTDEITSVSDSSA	1704	D0MQ64	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	14.37	16-MOD:00696	null	null	875.849609375	null	ms_run[1]:spectrum=1704	null	null	null	null	0
+PSM	GGAHHTDEITSVSDSSA	1857	D0MQ64	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	19.71	11-MOD:00696,16-MOD:00696	null	null	610.8908081054688	null	ms_run[1]:spectrum=1857	null	null	null	null	0
+PSM	GGAHHTDEITSVSDSSA	1861	D0MQ64	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	15.06	13-MOD:00696,16-MOD:00696	null	null	915.834716796875	null	ms_run[1]:spectrum=1861	null	null	null	null	0
+PSM	FLGSDVR	2071	D0MQ72	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	18.86	null	null	null	397.21319580078125	null	ms_run[1]:spectrum=2071	null	null	null	null	0
+PSM	LDEAAIER	1793	D0MQ72	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	15.21	null	null	null	458.7409362792969	null	ms_run[1]:spectrum=1793	null	null	null	null	0
+PSM	IDAVDAAAVR	2337	D0MQ72	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	24.97	null	null	null	500.77496337890625	null	ms_run[1]:spectrum=2337	null	null	null	null	0
+PSM	KCLIDMPSR	660	D0MQE0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	0.12	2-MOD:01214,6-MOD:00412	null	null	568.2835083007812	null	ms_run[1]:spectrum=660	null	null	null	null	0
+PSM	SNSSFAGVAQQLVTSR	4615	D0MQE0	null	phytophtora_infestans_rnd	20100422.fasta	[MS, MS:1001207, Mascot, ]	23.67	3-MOD:00696	null	null	866.4058227539062	null	ms_run[1]:spectrum=4615	null	null	null	null	0
