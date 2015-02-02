@@ -153,12 +153,18 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
 
     @Test
     public void testSearchByProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
+        String searchAccession = PROTEIN_A5A5Z5_ACCESSION;
+        searchByProteinAccession(searchAccession);
+
+    }
+
+    private void searchByProteinAccession(String searchAccession) throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
         addProjectPXD000433ToIndex();
 
         ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
         Collection<? extends ProjectProvider> res =
                 projectSearchDao.searchProjectAny(
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + PROTEIN_A5A5Z5_ACCESSION,
+                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + searchAccession,
                         SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
                         null,
                         0,
@@ -170,50 +176,20 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
         assertEquals(1, res.size());
         // check that is PXD000433
         checkIsProjectPXD000433(res.iterator().next());
-
     }
 
-    @Test
-     public void testSearchByOtherProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        addProjectPXD000433ToIndex();
-
-        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
-        Collection<? extends ProjectProvider> res =
-                projectSearchDao.searchProjectAny(
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + UNIPROT_ACCESSION,
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
-                        null,
-                        0,
-                        1,
-                        SearchFields.ACCESSION.getIndexName(),
-                        "desc"
-                );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000433(res.iterator().next());
-
-    }
+    // disabled, since it depends on data from an external resource (UniProt) that is not guaranteed to be available
+//    @Test
+//     public void testSearchByOtherProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
+//        String searchAccession = OTHER_ACCESSION;
+//        searchByProteinAccession(searchAccession);
+//
+//    }
 
     @Test
     public void testSearchByUniprotProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        addProjectPXD000433ToIndex();
-
-        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
-        Collection<? extends ProjectProvider> res =
-                projectSearchDao.searchProjectAny(
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + OTHER_ACCESSION,
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
-                        null,
-                        0,
-                        1,
-                        SearchFields.ACCESSION.getIndexName(),
-                        "desc"
-                );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000433(res.iterator().next());
+        String searchAccession = UNIPROT_ACCESSION;
+        searchByProteinAccession(searchAccession);
 
     }
 
