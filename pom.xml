@@ -16,9 +16,9 @@
         This project requires several maven profiles to build and run correctly.
         // ToDo: should that not be defined in the client that uses this library?
         Maven profiles to use:
-            db-pride-repo-pridepro             connection config for the PRIDE repo Oracle DB
-            db-pride-repo-pridearch-ro-user    read only user (and schema) for the PRIDE repo Oracle DB
-            pride-archive-solr-cores           solr cores for PRIDE Archive
+            db-pride-repo-pridepro              connection config for the PRIDE repo Oracle DB
+            db-pride-repo-pridearch-ro-user     read only user (and schema) for the PRIDE repo Oracle DB
+            pride-archive-solr-cores-prod       solr cores for PRIDE Archive
 
         NOTE: to build an executable indexer version
               (and assembly to generate a zip) an additional profile
@@ -51,11 +51,11 @@
     <properties>
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>0.1.1</protein.identification.index.search.version>
-        <psm.index.search.version>0.1.6</psm.index.search.version>
+        <protein.identification.index.search.version>0.1.2</protein.identification.index.search.version>
+        <psm.index.search.version>0.1.7</psm.index.search.version>
         <ontology.index.search.version>0.1.1</ontology.index.search.version>
         <!--for testing-->
-        <jmztab.version>3.0.1</jmztab.version>
+        <jmztab.version>3.0.2</jmztab.version>
     </properties>
 
     <build>
