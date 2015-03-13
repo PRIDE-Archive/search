@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -252,9 +252,9 @@
     </repositories>
 
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</url>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/tags/archive-search-1.0.4</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/tags/archive-search-1.0.4</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-archive/search/tags/archive-search-1.0.4</url>
     </scm>
 
 </project>
