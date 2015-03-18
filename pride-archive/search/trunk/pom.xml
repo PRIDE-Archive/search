@@ -200,12 +200,6 @@
             <groupId>uk.ac.ebi.pride</groupId>
             <artifactId>jmztab-modular-util</artifactId>
             <version>${jmztab.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
             <scope>test</scope>
         </dependency>
 
@@ -231,10 +225,10 @@
         </dependency>
 
         <!-- Oracle DB driver -->
-        <!-- ToDo: this should be provided! -->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>oracle-thin</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
