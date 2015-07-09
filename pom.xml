@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -52,7 +52,7 @@
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
         <protein.identification.index.search.version>0.1.2</protein.identification.index.search.version>
-        <psm.index.search.version>0.1.7</psm.index.search.version>
+        <psm.index.search.version>0.1.8</psm.index.search.version>
         <ontology.index.search.version>0.1.1</ontology.index.search.version>
         <!--for testing-->
         <jmztab.version>3.0.2</jmztab.version>
