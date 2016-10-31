@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
         <artifactId>pride-base-master</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
@@ -83,13 +83,12 @@
                 <!-- ToDo: remove with next pride master version 1.0.4, as globally configured -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>${maven.release.plugin}</version>
                 <configuration>
                     <remoteTagging>true</remoteTagging>
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -97,6 +96,20 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <parallel>classes</parallel>
+                    <threadCount>1</threadCount>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <junitArtifactName>junit:junit</junitArtifactName>
                 </configuration>
             </plugin>
 		</plugins>
@@ -173,7 +186,11 @@
     </profiles>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- ##### PRIDE dependencies ##### ##### ##### ##### ##### -->
         <!-- protein-identification-index-search -->
         <dependency>
@@ -243,22 +260,37 @@
     </dependencies>
 
     <repositories>
-        <repository> <!-- EBI repo -->
-            <id>nexus-ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
-            <releases>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+        <repository>
+            <id>nexus-ebi-release-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+        </repository>
+        <repository>
+            <id>nexus-ebi-snapshot-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <!-- EBI repo -->
+        <repository>
+            <id>pst-release</id>
+            <name>EBI Nexus Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+        </repository>
+        <!-- EBI SNAPSHOT repo -->
+        <snapshotRepository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>pst-snapshots</id>
+            <name>EBI Nexus Snapshots Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride-archive/search/trunk/</url>
+        <connection>scm:git:https://github.com/PRIDE-Archive/search.git</connection>
+        <developerConnection>scm:git:https://github.com/PRIDE-Archive/search.git</developerConnection>
+        <url>https://github.com/PRIDE-Archive/search</url>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
