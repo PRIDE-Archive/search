@@ -175,6 +175,27 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         }
     }
 
+    public void deleteProjectFromIndexAndReindex(String projectAccession) {
+        try {
+            deleteProjectFromIndex(projectAccession);
+            ProjectProvider project = projectRepository.findByAccession(projectAccession);
+             if (project.getPublicationDate() != null) { // we are going to index just public projects
+                 createAndIndexSolrProject(project);
+             } else {
+                 logger.error("Not indexing project, it does not have a publication date.");
+             }
+        } catch (SolrServerException|IOException e) {
+            throw new RuntimeException("Failed to delete data in Solr. ", e);
+        }
+    }
+
+    private void deleteProjectFromIndex(String projectAccession) throws IOException, SolrServerException {
+        projectServer.deleteByQuery("id:" + projectAccession);
+        projectServer.commit();
+        logger.info("Project " + projectAccession + " deleted from index!");
+    }
+
+
     private void createAndIndexSolrProject(ProjectProvider project) throws IOException, SolrServerException {
 
         List<? extends ProteinIdentificationProvider> proteinIdentifications = getProteinIdentificationsForProject(project);
