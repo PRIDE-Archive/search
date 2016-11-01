@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
