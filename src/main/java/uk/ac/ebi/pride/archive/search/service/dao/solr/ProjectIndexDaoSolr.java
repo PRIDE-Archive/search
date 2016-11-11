@@ -189,7 +189,7 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         }
     }
 
-    private void deleteProjectFromIndex(String projectAccession) throws IOException, SolrServerException {
+    public void deleteProjectFromIndex(String projectAccession) throws IOException, SolrServerException {
         projectServer.deleteByQuery("id:" + projectAccession);
         projectServer.commit();
         logger.info("Project " + projectAccession + " deleted from index!");
