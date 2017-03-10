@@ -14,7 +14,6 @@ import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.ontology.search.service.OntologyTermSearchService;
 import uk.ac.ebi.pride.archive.repo.assay.AssayRepository;
 import uk.ac.ebi.pride.archive.repo.project.ProjectRepository;
-import uk.ac.ebi.pride.archive.search.model.SolrPeptideSequence;
 import uk.ac.ebi.pride.archive.search.model.SolrProject;
 import uk.ac.ebi.pride.archive.search.service.dao.ProjectIndexDao;
 import uk.ac.ebi.pride.archive.search.util.CvParamHelperMethods;
@@ -22,7 +21,6 @@ import uk.ac.ebi.pride.archive.search.util.SolrQueryFactory;
 import uk.ac.ebi.pride.archive.search.util.modelmapper.SolrProjectMapper;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
 import uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService;
-import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -42,7 +40,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
     private AssayRepository assayRepository;
     private OntologyTermSearchService ontologyTermSearchService;
     private ProteinIdentificationSearchService proteinIdentificationSearchService;
-    private PsmSearchService psmSearchService;
 
 
     @Deprecated
@@ -58,22 +55,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         this.proteinIdentificationSearchService = proteinIdentificationSearchService;
 
     }
-
-    public ProjectIndexDaoSolr(SolrServer projectServer,
-                               ProjectRepository projectRepository,
-                               AssayRepository assayRepository,
-                               OntologyTermSearchService ontologyTermSearchService,
-                               ProteinIdentificationSearchService proteinIdentificationSearchService,
-                               PsmSearchService psmSearchService) {
-        this.projectServer = projectServer;
-        this.projectRepository = projectRepository;
-        this.assayRepository = assayRepository;
-        this.ontologyTermSearchService = ontologyTermSearchService;
-        this.proteinIdentificationSearchService = proteinIdentificationSearchService;
-        this.psmSearchService = psmSearchService;
-
-    }
-
 
     @Override
     public void indexAllPublicProjects() {
@@ -128,17 +109,14 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
     @Override
     public void addProject(ProjectProvider project,
                            Collection<? extends AssayProvider> assays,
-                           Collection<? extends ProteinReferenceProvider> proteinReferences,
-                           Collection<? extends PeptideSequenceProvider> peptideSequences) {
+                           Collection<? extends ProteinReferenceProvider> proteinReferences) {
 
         //TODO Check if need to be deleted
         try {
-            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays, proteinReferences, peptideSequences);
-
+            SolrProjectMapper solrProject = new SolrProjectMapper(project, assays, proteinReferences);
             // populate relatives
             if (ontologyTermSearchService != null)
                 CvParamHelperMethods.populateRelatives(solrProject, ontologyTermSearchService);
-
             projectServer.addBean(solrProject);
             projectServer.commit();
         } catch (SolrServerException e) {
@@ -146,7 +124,6 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
     }
 
     @Override
@@ -199,17 +176,14 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
     private void createAndIndexSolrProject(ProjectProvider project) throws IOException, SolrServerException {
 
         List<? extends ProteinIdentificationProvider> proteinIdentifications = getProteinIdentificationsForProject(project);
-        Collection<PeptideSequenceProvider> peptideSequences = getPeptideSequencesForProject(project);
 
         logger.info("Got " + proteinIdentifications.size() + " protein identifications from Protein index for project " + project.getAccession());
-        logger.info("Got " + peptideSequences.size() + " peptide sequences from PSM index for project " + project.getAccession());
 
         //create the solr object with proteins and peptide sequences
         SolrProjectMapper solrProject = new SolrProjectMapper(
                 project,
                 assayRepository.findAllByProjectId(project.getId()),
-                proteinIdentifications,
-                peptideSequences
+                proteinIdentifications
         );
 
         // populate relatives
@@ -235,35 +209,4 @@ public class ProjectIndexDaoSolr implements ProjectIndexDao {
         }
         return proteinIdentifications;
     }
-
-    /**
-     *  Retrieves peptide sequences from the psm store
-     * @param project Project to query the psm store and retrieve the peptides
-     * @return peptide sequences
-     */
-    private Collection<PeptideSequenceProvider> getPeptideSequencesForProject(ProjectProvider project) {
-        Collection<PeptideSequenceProvider> peptideSequences = new LinkedList<PeptideSequenceProvider>();
-        // build protein identifications from psm service
-        if (psmSearchService != null) {
-            peptideSequences = buildPeptideSequenceProviderItems(psmSearchService.findPeptideSequencesByProjectAccession(project.getAccession()));
-        } else {
-            logger.warn("Psm index not available. Peptide sequences will not be added.");
-        }
-        return peptideSequences;
-    }
-
-    private Collection<PeptideSequenceProvider> buildPeptideSequenceProviderItems(List<String> peptideSequences) {
-
-        Collection<PeptideSequenceProvider> res = new LinkedList<PeptideSequenceProvider>();
-
-        if(peptideSequences!=null) {
-            for (String sequence: peptideSequences) {
-                SolrPeptideSequence peptideSequence = new SolrPeptideSequence();
-                peptideSequence.setPeptideSequence(sequence);
-                res.add(peptideSequence);
-            }
-        }
-        return res;
-    }
-
 }

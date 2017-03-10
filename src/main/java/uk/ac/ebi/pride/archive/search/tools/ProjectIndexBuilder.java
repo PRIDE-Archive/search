@@ -11,7 +11,6 @@ import uk.ac.ebi.pride.archive.repo.project.ProjectRepository;
 import uk.ac.ebi.pride.archive.search.service.ProjectIndexService;
 import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectIndexDaoSolr;
 import uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService;
-import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 
 /**
  * @author Jose A. Dianes
@@ -20,19 +19,17 @@ import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 @Component
 public class ProjectIndexBuilder {
 
-    //DB Repositories
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private AssayRepository assayRepository;
+  //DB Repositories
+  @Autowired
+  private ProjectRepository projectRepository;
+  @Autowired
+  private AssayRepository assayRepository;
 
-    //Solr Repositories
-    @Autowired
-    private OntologyTermSearchService ontologyTermSearchService;
-    @Autowired
-    private PsmSearchService psmSearchService;
-    @Autowired
-    private ProteinIdentificationSearchService proteinIdentificationSearchService;
+  //Solr Repositories
+  @Autowired
+  private OntologyTermSearchService ontologyTermSearchService;
+  @Autowired
+  private ProteinIdentificationSearchService proteinIdentificationSearchService;
 
     /*
     HttpSolrServer is thread-safe and if you are using the following constructor,
@@ -42,54 +39,48 @@ public class ProjectIndexBuilder {
     See https://issues.apache.org/jira/browse/SOLR-861 for more details
     */
 
-    @Autowired
-    private SolrServer solrProjectServer;
+  @Autowired
+  private SolrServer solrProjectServer;
 
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring/app-context.xml");
-
-        ProjectIndexBuilder projectIndexBuilder = context.getBean(ProjectIndexBuilder.class);
-
-        if (args.length>0 && "inc".equals(args[0].toLowerCase())) {
-            indexNonExistingPublicProjects(projectIndexBuilder);
-        } else if (args.length>0 && "all".equals(args[0].toLowerCase())) {
-            indexPublicProjects(projectIndexBuilder);
-        } else {
-            System.out.println("Arguments:");
-            System.out.println("   inc   - index projects not already in the index");
-            System.out.println("   all   - deletes the index and index all projects");
-        }
-
+  public static void main(String[] args) {
+    ApplicationContext context = new ClassPathXmlApplicationContext("spring/app-context.xml");
+    ProjectIndexBuilder projectIndexBuilder = context.getBean(ProjectIndexBuilder.class);
+    if (args.length>0 && "inc".equals(args[0].toLowerCase())) {
+      indexNonExistingPublicProjects(projectIndexBuilder);
+    } else if (args.length>0 && "all".equals(args[0].toLowerCase())) {
+      indexPublicProjects(projectIndexBuilder);
+    } else {
+      System.out.println("Arguments:");
+      System.out.println("   inc   - index projects not already in the index");
+      System.out.println("   all   - deletes the index and index all projects");
     }
 
-    public static void indexPublicProjects(ProjectIndexBuilder projectIndexBuilder) {
+  }
 
-        ProjectIndexService projectIndexService = new ProjectIndexService(new ProjectIndexDaoSolr(
-                projectIndexBuilder.solrProjectServer,
-                projectIndexBuilder.projectRepository,
-                projectIndexBuilder.assayRepository,
-                projectIndexBuilder.ontologyTermSearchService,
-                projectIndexBuilder.proteinIdentificationSearchService,
-                projectIndexBuilder.psmSearchService
-                ));
+  public static void indexPublicProjects(ProjectIndexBuilder projectIndexBuilder) {
+    ProjectIndexService projectIndexService = new ProjectIndexService(new ProjectIndexDaoSolr(
+        projectIndexBuilder.solrProjectServer,
+        projectIndexBuilder.projectRepository,
+        projectIndexBuilder.assayRepository,
+        projectIndexBuilder.ontologyTermSearchService,
+        projectIndexBuilder.proteinIdentificationSearchService
+    ));
 
-        projectIndexService.indexAllPublicProjects();
+    projectIndexService.indexAllPublicProjects();
 
-    }
+  }
 
-    public static void indexNonExistingPublicProjects(ProjectIndexBuilder projectIndexBuilder) {
+  public static void indexNonExistingPublicProjects(ProjectIndexBuilder projectIndexBuilder) {
+    ProjectIndexService projectIndexService = new ProjectIndexService(new ProjectIndexDaoSolr(
+        projectIndexBuilder.solrProjectServer,
+        projectIndexBuilder.projectRepository,
+        projectIndexBuilder.assayRepository,
+        projectIndexBuilder.ontologyTermSearchService,
+        projectIndexBuilder.proteinIdentificationSearchService
+    ));
 
-        ProjectIndexService projectIndexService = new ProjectIndexService(new ProjectIndexDaoSolr(
-                projectIndexBuilder.solrProjectServer,
-                projectIndexBuilder.projectRepository,
-                projectIndexBuilder.assayRepository,
-                projectIndexBuilder.ontologyTermSearchService,
-                projectIndexBuilder.proteinIdentificationSearchService,
-                projectIndexBuilder.psmSearchService
-        ));
+    projectIndexService.indexAllNonExistingPublicProjects();
 
-        projectIndexService.indexAllNonExistingPublicProjects();
-
-    }
+  }
 
 }

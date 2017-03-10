@@ -19,8 +19,7 @@ public interface ProjectIndexDao {
 
     void addProject(ProjectProvider project,
                     Collection<? extends AssayProvider> assays,
-                    Collection<? extends ProteinReferenceProvider> proteinReferences, // a Map from assay accessions to protein references
-                    Collection<? extends PeptideSequenceProvider> peptideSequences
+                    Collection<? extends ProteinReferenceProvider> proteinReferences // a Map from assay accessions to protein references
     );
 
 

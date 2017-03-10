@@ -5,12 +5,12 @@
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
         <artifactId>pride-base-master</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
     </parent>
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.9-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -51,7 +51,7 @@
     <properties>
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>0.1.2</protein.identification.index.search.version>
+        <protein.identification.index.search.version>0.1.3-SNAPSHOT</protein.identification.index.search.version>
         <psm.index.search.version>0.1.8</psm.index.search.version>
         <ontology.index.search.version>0.1.1</ontology.index.search.version>
         <!--for testing-->
@@ -202,12 +202,6 @@
             <groupId>uk.ac.ebi.pride</groupId>
             <artifactId>protein-identification-index-search</artifactId>
             <version>${protein.identification.index.search.version}</version>
-        </dependency>
-        <!-- psm-index-search -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>psm-index-search</artifactId>
-            <version>${psm.index.search.version}</version>
         </dependency>
         <!-- ontology-index-search -->
         <dependency>

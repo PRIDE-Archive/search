@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.archive.search.integration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.pride.archive.dataprovider.identification.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider;
 import uk.ac.ebi.pride.archive.search.util.ErrorLogOutputStream;
@@ -12,7 +11,6 @@ import uk.ac.ebi.pride.jmztab.utils.errors.MZTabException;
 import uk.ac.ebi.pride.proteincatalogindex.search.mappings.ProteinAccessionMappingsFinder;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
 import uk.ac.ebi.pride.proteinidentificationindex.search.util.ProteinIdentificationMzTabBuilder;
-import uk.ac.ebi.pride.psmindex.search.util.PsmMzTabBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,46 +65,6 @@ public class MzTabDataProviderReader {
 
         return res;
     }
-
-    /**
-     * For testing purposes only. We should use the database to retrieve the names of the files to index
-     *
-     * mzTab files in the directory will have names such as PRIDE_Exp_Complete_Ac_28654.submissions. We are interested in the
-     * assay accession, the last bit if we split by '_'. For testing purposes only.
-     *
-     * @return A map of assay accessions to PSMs
-     * @throws java.io.IOException
-     */
-    public static LinkedList<PeptideSequenceProvider> readPsmsFromMzTabFilesDirectory(String projectAccession, File mzTabFilesDirectory) throws IOException, MZTabException {
-
-        LinkedList<PeptideSequenceProvider> res = new LinkedList<PeptideSequenceProvider>();
-
-        File[] mzTabFilesInDirectory = mzTabFilesDirectory.listFiles(new MzTabFileNameFilter());
-        if (mzTabFilesInDirectory != null) {
-            for (File tabFile : mzTabFilesInDirectory) {
-
-                MZTabFileParser mzTabFileParser = new MZTabFileParser(tabFile, errorLogOutputStream);
-                MZTabFile mzTabFile = mzTabFileParser.getMZTabFile();
-
-                if (mzTabFile != null) {
-                    // get assay accession
-                    String assayAccession = tabFile.getName().split("[_\\.]")[4];
-
-                    // get all psms from the file
-                    List<? extends PeptideSequenceProvider> psms = PsmMzTabBuilder.readPsmsFromMzTabFile(projectAccession, assayAccession, mzTabFile);
-
-                    // add unique sequences to the result
-                    res.addAll(psms);
-                    logger.debug("Found " + psms.size() + " psms for Assay " + assayAccession + " in file " + tabFile.getAbsolutePath());
-                } else {
-                    mzTabFileParser.getErrorList().print(errorLogOutputStream);
-                }
-            }
-        }
-
-        return res;
-    }
-
 
     /**
      * For testing purposes only.

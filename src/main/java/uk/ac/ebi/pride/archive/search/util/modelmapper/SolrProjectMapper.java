@@ -26,16 +26,14 @@ public class SolrProjectMapper extends SolrProject {
     public static final String NODOI = "noDOI";
 
     public SolrProjectMapper(ProjectProvider project, Collection<? extends AssayProvider> assays,
-                             Collection<? extends ProteinReferenceProvider> proteinReferences,
-                             Collection<? extends PeptideSequenceProvider> peptideSequences) {
-        initMethod(project, assays, proteinReferences, peptideSequences);
+                             Collection<? extends ProteinReferenceProvider> proteinReferences) {
+        initMethod(project, assays, proteinReferences);
     }
 
 
     //initialize attributes from Project object
     private void initMethod(ProjectProvider project, Collection<? extends AssayProvider> assays,
-                            Collection<? extends ProteinReferenceProvider> proteinReferences,
-                            Collection<? extends PeptideSequenceProvider> peptideSequences){
+                            Collection<? extends ProteinReferenceProvider> proteinReferences) {
         this.setAccession(project.getAccession());
         this.setDoi(project.getDoi());
         this.setTitle(project.getTitle());
@@ -116,12 +114,6 @@ public class SolrProjectMapper extends SolrProject {
         if (proteinReferences != null) {
             this.setProteinIdentifications(proteinReferences);
         }
-
-        // peptide sequences
-        if (peptideSequences != null) {
-            this.setPeptideSequences(peptideSequences);
-        }
-
     }
 
     private int calculateTotalSpectrumCount(ProjectProvider project) {
