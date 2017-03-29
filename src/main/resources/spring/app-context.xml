@@ -60,10 +60,6 @@
         <constructor-arg name="baseURL" value="${solr.server.protein.core.url}" />
     </bean>
 
-    <bean id="solrPsmServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer">
-        <constructor-arg name="baseURL" value="${solr.server.psm.core.url}" />
-    </bean>
-
     <!--Solr Templates-->
     <bean id="solrOntologyTemplate" class="org.springframework.data.solr.core.SolrTemplate">
         <constructor-arg name="solrServer" ref="solrOntologyServer"/>
@@ -73,9 +69,6 @@
         <constructor-arg name="solrServer" ref="solrProteinServer"/>
     </bean>
 
-    <bean id="solrPsmTemplate" class="org.springframework.data.solr.core.SolrTemplate">
-        <constructor-arg name="solrServer" ref="solrPsmServer"/>
-    </bean>
 
     <!--Solr Factories-->
     <bean id="solrOntologyTermRepositoryFactory" class="uk.ac.ebi.pride.archive.ontology.search.repository.SolrOntologyTermRepositoryFactory">
@@ -86,10 +79,6 @@
         <constructor-arg ref="solrProteinTemplate"/>
     </bean>
 
-    <bean id="solrPsmRepositoryFactory" class="uk.ac.ebi.pride.psmindex.search.service.repository.SolrPsmRepositoryFactory">
-        <constructor-arg ref="solrPsmTemplate"/>
-    </bean>
-
     <!-- Search Services -->
     <bean id="ontologyTermSearchService" class="uk.ac.ebi.pride.archive.ontology.search.service.OntologyTermSearchService">
         <constructor-arg value="#{ solrOntologyTermRepositoryFactory.create() }"/>
@@ -97,10 +86,6 @@
 
     <bean id="proteinIdentificationSearchService" class="uk.ac.ebi.pride.proteinidentificationindex.search.service.ProteinIdentificationSearchService">
         <constructor-arg value="#{ solrProteinIdentificationRepositoryFactory.create() }"/>
-    </bean>
-
-    <bean id="psmSearchService" class="uk.ac.ebi.pride.psmindex.search.service.PsmSearchService">
-        <constructor-arg value="#{ solrPsmRepositoryFactory.create() }"/>
     </bean>
 
     <!-- property files -->
