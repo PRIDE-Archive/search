@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>uk.ac.ebi.pride.maven</groupId>
-        <artifactId>pride-base-master</artifactId>
-        <version>1.0.4</version>
+        <groupId>uk.ac.ebi.pride.architectural</groupId>
+        <artifactId>pride-core</artifactId>
+        <version>1.0.1</version>
     </parent>
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
@@ -26,36 +26,12 @@
                   pride-archive-indexer-assembly
     -->
 
-    <licenses>
-        <license>
-            <name>The Apache Software License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>PRIDE Developer</name>
-            <id>pride-support@ebi.ac.uk</id>
-            <email>pride-support@ebi.ac.uk</email>
-            <organization>Proteomics Services Team, EMBL - European Bioinformatics Institute</organization>
-        </developer>
-    </developers>
-
-	<organization>
-		<name>EMBL - European Bioinformatics Institute</name>
-		<url>http://www.ebi.ac.uk</url>
-	</organization>
-
     <properties>
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>0.1.2</protein.identification.index.search.version>
-        <psm.index.search.version>0.1.8</psm.index.search.version>
-        <ontology.index.search.version>0.1.1</ontology.index.search.version>
-        <!--for testing-->
-        <jmztab.version>3.0.2</jmztab.version>
+        <protein.identification.index.search.version>1.0.0</protein.identification.index.search.version>
+        <psm.index.search.version>1.0.0</psm.index.search.version>
+        <ontology.index.search.version>1.0.0</ontology.index.search.version>
     </properties>
 
     <build>
@@ -172,7 +148,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven.javadoc.plugin}</version>
+                        <version>2.10.4</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -194,6 +170,7 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
             <scope>test</scope>
         </dependency>
         <!-- ##### PRIDE dependencies ##### ##### ##### ##### ##### -->
@@ -214,6 +191,12 @@
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>ontology-index-search</artifactId>
             <version>${ontology.index.search.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- archive-repo -->
         <dependency>
@@ -227,14 +210,6 @@
             <artifactId>archive-data-provider-api</artifactId>
             <version>${archive.data.provider.api.version}</version>
         </dependency>
-        <!-- jmztab-modular-util for testing -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>jmztab-modular-util</artifactId>
-            <version>${jmztab.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- ##### 3rd party dependencies ##### ##### ##### ##### ##### -->
         <!-- spring-ws-core -->
         <dependency>
@@ -247,12 +222,12 @@
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>${solrj.version}</version>
+            <version>4.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-test-framework</artifactId>
-            <version>${solrj.version}</version>
+            <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -260,36 +235,10 @@
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>oracle-thin</artifactId>
+            <version>11.2.0.1.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>nexus-ebi-release-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
-        </repository>
-        <repository>
-            <id>nexus-ebi-snapshot-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <!-- EBI repo -->
-        <repository>
-            <id>pst-release</id>
-            <name>EBI Nexus Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
-        </repository>
-        <!-- EBI SNAPSHOT repo -->
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>pst-snapshots</id>
-            <name>EBI Nexus Snapshots Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <scm>
         <connection>scm:git:https://github.com/PRIDE-Archive/search.git</connection>
@@ -297,5 +246,4 @@
         <url>https://github.com/PRIDE-Archive/search</url>
         <tag>HEAD</tag>
     </scm>
-
 </project>
