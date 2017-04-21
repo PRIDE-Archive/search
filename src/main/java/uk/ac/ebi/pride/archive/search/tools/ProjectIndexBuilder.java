@@ -29,10 +29,6 @@ public class ProjectIndexBuilder {
     //Solr Repositories
     @Autowired
     private OntologyTermSearchService ontologyTermSearchService;
-    @Autowired
-    private PsmSearchService psmSearchService;
-    @Autowired
-    private ProteinIdentificationSearchService proteinIdentificationSearchService;
 
     /*
     HttpSolrServer is thread-safe and if you are using the following constructor,
@@ -68,9 +64,7 @@ public class ProjectIndexBuilder {
                 projectIndexBuilder.solrProjectServer,
                 projectIndexBuilder.projectRepository,
                 projectIndexBuilder.assayRepository,
-                projectIndexBuilder.ontologyTermSearchService,
-                projectIndexBuilder.proteinIdentificationSearchService,
-                projectIndexBuilder.psmSearchService
+                projectIndexBuilder.ontologyTermSearchService
                 ));
 
         projectIndexService.indexAllPublicProjects();
@@ -83,9 +77,7 @@ public class ProjectIndexBuilder {
                 projectIndexBuilder.solrProjectServer,
                 projectIndexBuilder.projectRepository,
                 projectIndexBuilder.assayRepository,
-                projectIndexBuilder.ontologyTermSearchService,
-                projectIndexBuilder.proteinIdentificationSearchService,
-                projectIndexBuilder.psmSearchService
+                projectIndexBuilder.ontologyTermSearchService
         ));
 
         projectIndexService.indexAllNonExistingPublicProjects();

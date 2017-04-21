@@ -35,11 +35,9 @@ public class ProjectIndexService {
     }
 
     public void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays,
-                    Collection<? extends ProteinReferenceProvider> proteinReferences,
-                    Collection<? extends PeptideSequenceProvider> peptideSequences
+                    Collection<? extends AssayProvider> assays
     ) {
-        this.projectIndexDao.addProject(project,assays, proteinReferences, peptideSequences);
+        this.projectIndexDao.addProject(project,assays);
     }
 
     public void addProject(ProjectProvider project) {

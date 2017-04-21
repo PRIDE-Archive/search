@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>1.0.11-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -29,8 +29,8 @@
     <properties>
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>1.0.0</protein.identification.index.search.version>
-        <psm.index.search.version>1.0.0</psm.index.search.version>
+        <protein.identification.index.search.version>1.0.1-REDUCED_SCHEMA-SNAPSHOT</protein.identification.index.search.version>
+        <psm.index.search.version>1.0.1-DEV-REDUCED_SCHEMA-SNAPSHOT</psm.index.search.version>
         <ontology.index.search.version>1.0.0</ontology.index.search.version>
     </properties>
 

@@ -52,13 +52,6 @@ public class MzTabDataProviderReader {
                 if (mzTabFile != null) {
                     // get assay accession
                     String assayAccession = tabFile.getName().split("[_\\.]")[4];
-                    // get proteins
-                    List<ProteinIdentification> proteinIdentifications = ProteinIdentificationMzTabBuilder.readProteinIdentificationsFromMzTabFile(projectAccession, assayAccession, mzTabFile);
-                    enrichProteinIdentificationListWithOtherMappings(proteinIdentifications);
-
-                    // add assay proteins to the result
-                    res.addAll(proteinIdentifications);
-                    logger.info("Found " + proteinIdentifications.size() + " protein identifications for Assay " + assayAccession + " in file " + tabFile.getAbsolutePath());
                 } else {
                     mzTabFileParser.getErrorList().print(errorLogOutputStream);
                 }
@@ -105,44 +98,6 @@ public class MzTabDataProviderReader {
         }
 
         return res;
-    }
-
-
-    /**
-     * For testing purposes only.
-     * In the general case, we don't read the identifications from mzTab, we read them
-     * from the protein identification index that contains the other mappings.
-     * @param proteinReferences list of protein references to be enriched
-     */
-    private static void enrichProteinIdentificationListWithOtherMappings(List<ProteinIdentification> proteinReferences) {
-
-        logger.debug("Processing " + proteinReferences.size() + " proteins");
-
-        Set<String> accessions = new TreeSet<String>();
-        Map<String, String> uniprotMappings;
-        Map<String, String> ensemblMappings;
-        Map<String, TreeSet<String>> otherMappings;
-
-        for (ProteinIdentification protein : proteinReferences) {
-            accessions.add(protein.getAccession());
-        }
-
-        try {
-            uniprotMappings = ProteinAccessionMappingsFinder.findProteinUniprotMappingsForAccession(accessions);
-            ensemblMappings = ProteinAccessionMappingsFinder.findProteinEnsemblMappingsForAccession(accessions);
-            otherMappings = ProteinAccessionMappingsFinder.findProteinOtherMappingsForAccession(accessions);
-
-            for (ProteinIdentification proteinReference : proteinReferences) {
-                String proteinAccession = proteinReference.getAccession();
-                proteinReference.setUniprotMapping(uniprotMappings.get(proteinAccession));
-                proteinReference.setEnsemblMapping(ensemblMappings.get(proteinAccession));
-                proteinReference.setOtherMappings(otherMappings.get(proteinAccession));
-            }
-
-        } catch (IOException e) {
-            logger.error("Cannot get mappings");
-        }
-
     }
 
     /**

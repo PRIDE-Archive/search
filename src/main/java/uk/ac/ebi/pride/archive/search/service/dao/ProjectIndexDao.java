@@ -12,17 +12,14 @@ import java.util.Collection;
  * @version $Id$
  */
 public interface ProjectIndexDao {
-    //    void indexAllProjects();
+
     void indexAllPublicProjects();
 
     void indexAllNonExistingPublicProjects();
 
     void addProject(ProjectProvider project,
-                    Collection<? extends AssayProvider> assays,
-                    Collection<? extends ProteinReferenceProvider> proteinReferences, // a Map from assay accessions to protein references
-                    Collection<? extends PeptideSequenceProvider> peptideSequences
+                    Collection<? extends AssayProvider> assays
     );
-
 
     void addProject(ProjectProvider project);
 }
