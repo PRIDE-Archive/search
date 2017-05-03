@@ -35,17 +35,6 @@ import java.util.*;
  */
 public class SolrProjectSearchTest extends SolrTestCaseJ4 {
 
-    private static final String PROTEIN_A5A5Z5_ACCESSION = "A5A5Z5";
-
-    private static final String UNIPROT_ACCESSION = "A5A5Z5";
-    private static final String ENSEMBL_ACCESSION = "A5A5Z5";
-    private static final String OTHER_ACCESSION = "UPI0001509A10";
-
-    private static final String FIRST_PEPTIDE_SEQUENCE_PXD000581 = "FLTDRYPISGIFSGK";
-    private static final String SECOND_PEPTIDE_SEQUENCE_PXD000581 = "LLSQTTSVHFHGQVQR";
-    private static final String THIRD_PEPTIDE_SEQUENCE_PXD000581 = "LYGILNHANAPVTR";
-    private static final String FOUR_PEPTIDE_SEQUENCE_PXD000581 = "VHAASTAGPFPDNAVVAR";
-
     private static final String PROJECT_PXD000433_ACCESSION = "PXD000433";
     private static final String PROJECT_PXD000581_ACCESSION = "PXD000581";
     private static final String PROJECT_PXTEST1_ACCESSION = "PXTEST1";
@@ -57,8 +46,8 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
     private SolrServer server;
     private SolrProject solrProject;
 
-    public static final long ZERO_DOCS = 0L;
-    public static final long SINGLE_DOC = 1L;
+    private static final long ZERO_DOCS = 0L;
+    private static final long SINGLE_DOC = 1L;
 
     private static LinkedList<ProteinReferenceProvider> proteinReferencesPXD000433;
     private static LinkedList<PeptideSequenceProvider> peptideSequencesPXD000433;
@@ -151,124 +140,6 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
 
     }
 
-    @Test
-    public void testSearchByProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        String searchAccession = PROTEIN_A5A5Z5_ACCESSION;
-        searchByProteinAccession(searchAccession);
-
-    }
-
-    private void searchByProteinAccession(String searchAccession) throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        addProjectPXD000433ToIndex();
-
-        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
-        Collection<? extends ProjectProvider> res =
-                projectSearchDao.searchProjectAny(
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + ":" + searchAccession,
-                        SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(),
-                        null,
-                        0,
-                        1,
-                        SearchFields.ACCESSION.getIndexName(),
-                        "desc"
-                );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000433(res.iterator().next());
-    }
-
-    // disabled, since it depends on data from an external resource (UniProt) that is not guaranteed to be available
-//    @Test
-//     public void testSearchByOtherProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-//        String searchAccession = OTHER_ACCESSION;
-//        searchByProteinAccession(searchAccession);
-//
-//    }
-
-    @Test
-    public void testSearchByUniprotProteinAccession() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        String searchAccession = UNIPROT_ACCESSION;
-        searchByProteinAccession(searchAccession);
-
-    }
-
-
-    @Test
-    public void testSearchByPeptide() throws SolrServerException, IOException, URISyntaxException, ParseException, MZTabException {
-        addProjectPXD000581ToIndex();
-
-        ProjectSearchDao projectSearchDao = new ProjectSearchDaoSolr(server);
-
-        Collection<? extends ProjectProvider> all =
-                projectSearchDao.searchProjectAny(
-                        SearchFields.PEPTIDE_SEQUENCES.getIndexName() + ":" + "*",
-                        SearchFields.PEPTIDE_SEQUENCES.getIndexName(),
-                        null,
-                        0,
-                        1,
-                        SearchFields.ACCESSION.getIndexName(),
-                        "desc"
-                );
-
-        Collection<? extends ProjectProvider> res =
-                projectSearchDao.searchProjectAny(
-                        SearchFields.PEPTIDE_SEQUENCES.getIndexName() + ":" + FIRST_PEPTIDE_SEQUENCE_PXD000581,
-                        SearchFields.PEPTIDE_SEQUENCES.getIndexName(),
-                        null,
-                        0,
-                        1,
-                        SearchFields.ACCESSION.getIndexName(),
-                        "desc"
-                );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000581
-        checkIsProjectPXD000581(res.iterator().next());
-
-        res = projectSearchDao.searchProjectAny(
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName() + ":" + SECOND_PEPTIDE_SEQUENCE_PXD000581,
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName(),
-                null,
-                0,
-                1,
-                SearchFields.ACCESSION.getIndexName(),
-                "desc"
-        );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000581(res.iterator().next());
-
-        res = projectSearchDao.searchProjectAny(
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName() + ":" + THIRD_PEPTIDE_SEQUENCE_PXD000581,
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName(),
-                null,
-                0,
-                1,
-                SearchFields.ACCESSION.getIndexName(),
-                "desc"
-        );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000581(res.iterator().next());
-
-        res = projectSearchDao.searchProjectAny(
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName() + ":" + FOUR_PEPTIDE_SEQUENCE_PXD000581,
-                SearchFields.PEPTIDE_SEQUENCES.getIndexName(),
-                null,
-                0,
-                1,
-                SearchFields.ACCESSION.getIndexName(),
-                "desc"
-        );
-        // check we found one project
-        assertEquals(1, res.size());
-        // check that is PXD000433
-        checkIsProjectPXD000581(res.iterator().next());
-    }
-
     private void checkIsProjectPXD000433(ProjectProvider searchResult) {
 
         SolrProject resSolrProject = (SolrProject) searchResult;
@@ -305,8 +176,8 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
         solrProject.setProjectTagNames(Arrays.asList("Biological","Technical"));
 
         //add a new project to index
-        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null, null, null);
-        projectIndexDao.addProject(solrProject, null, null, null );
+        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null);
+        projectIndexDao.addProject(solrProject, null);
 
     }
 
@@ -340,8 +211,8 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
 
 
         //add a new project to index
-        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null, null, null);
-        projectIndexDao.addProject(solrProject, null, proteinReferencesPXD000433, peptideSequencesPXD000433);
+        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null);
+        projectIndexDao.addProject(solrProject, null);
 
     }
 
@@ -378,8 +249,8 @@ public class SolrProjectSearchTest extends SolrTestCaseJ4 {
         }
 
         //add a new project to index
-        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null, null, null);
-        projectIndexDao.addProject(solrProject, null, proteinReferencesPXD000581, peptideSequencesPXD000581);
+        ProjectIndexDao projectIndexDao = new ProjectIndexDaoSolr(server, null, null, null);
+        projectIndexDao.addProject(solrProject, null);
 
     }
 }
