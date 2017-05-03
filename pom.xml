@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.11-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</version>
+    <version>1.0.11-SNAPSHOT</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
