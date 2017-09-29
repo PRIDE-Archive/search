@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.12-SNAPSHOT</version>
+    <version>1.0.12-SNAPSHOT-ORCID</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -28,10 +28,10 @@
 
     <properties>
         <java.version>1.7</java.version>
-        <archive.repo.version>1.0.0</archive.repo.version>
-        <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>1.0.1</protein.identification.index.search.version>
-        <psm.index.search.version>1.0.1</psm.index.search.version>
+        <archive.repo.version>1.0.1-SNAPSHOT-ORCID</archive.repo.version>
+        <archive.data.provider.api.version>2.0.10-SNAPSHOT-ORCID</archive.data.provider.api.version>
+        <protein.identification.index.search.version>1.0.2-SNAPSHOT-ORCID</protein.identification.index.search.version>
+        <psm.index.search.version>1.0.2-SNAPSHOT-ORCID</psm.index.search.version>
         <ontology.index.search.version>1.0.0</ontology.index.search.version>
     </properties>
 
