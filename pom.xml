@@ -30,7 +30,7 @@
         <java.version>1.7</java.version>
         <archive.repo.version>1.0.0</archive.repo.version>
         <archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>
-        <protein.identification.index.search.version>1.0.1</protein.identification.index.search.version>
+        <protein.identification.index.search.version>1.0.2</protein.identification.index.search.version>
         <psm.index.search.version>1.0.1</psm.index.search.version>
         <ontology.index.search.version>1.0.0</ontology.index.search.version>
     </properties>
