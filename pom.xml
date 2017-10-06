@@ -10,7 +10,7 @@
 
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-search</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14-SNAPSHOT</version>
 
     <!--
         This project requires several maven profiles to build and run correctly.
@@ -245,6 +245,6 @@
         <connection>scm:git:https://github.com/PRIDE-Archive/search.git</connection>
         <developerConnection>scm:git:https://github.com/PRIDE-Archive/search.git</developerConnection>
         <url>https://github.com/PRIDE-Archive/search</url>
-        <tag>archive-search-1.0.13</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
